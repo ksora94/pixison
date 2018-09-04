@@ -5,8 +5,15 @@
       "background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
   "permissions": [
     "contextMenus",
+    "activeTab",
     "tabs"
   ],
   "browser_action": {

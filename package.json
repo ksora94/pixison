@@ -1,7 +1,7 @@
 {
   "name": "chrome-extension-webpack",
   "version": "0.0.1",
-  "description": "A boilerplate to chrome extension with webpack",
+  "description": "Add web image to your google drive",
   "scripts": {
     "build": "node build/build.js",
     "start": "node build/webserver.js"
@@ -14,17 +14,20 @@
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^0.11.2",
     "fs-extra": "^0.30.0",
     "html-loader": "^0.4.5",
     "html-webpack-plugin": "2.24.1",
+    "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.13.2",
-    "webpack": "2.2.1",
-    "webpack-dev-server": "^2.3.0",
+    "webpack": "^4.17.2",
+    "webpack-dev-server": "^3.1.7",
     "write-file-webpack-plugin": "3.4.2"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   }

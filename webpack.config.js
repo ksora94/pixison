@@ -2,17 +2,29 @@ const webpack = require("webpack"),
     path = require("path"),
     fileSystem = require("fs"),
     env = require("./build/env"),
+    ExtractTextPlugin = require("extract-text-webpack-plugin"),
     CleanWebpackPlugin = require("clean-webpack-plugin"),
     CopyWebpackPlugin = require("copy-webpack-plugin"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     WriteFilePlugin = require("write-file-webpack-plugin");
 
 // load the secrets
-const alias = {};
+const alias = {
+    '@': path.resolve(__dirname, 'src'),
+    'assets': path.resolve(__dirname, 'src/assets'),
+    'panel': path.resolve(__dirname, 'src/panel'),
+    'css': path.resolve(__dirname, 'src/css')
+};
 
 const secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
 
 const fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
+
+const notHotReload = ['content'];
+
+const vendorModules = [
+    'react'
+];
 
 if (fileSystem.existsSync(secretsPath)) {
     alias["secrets"] = secretsPath;
@@ -20,7 +32,8 @@ if (fileSystem.existsSync(secretsPath)) {
 
 const options = {
     entry: {
-        panel: path.join(__dirname, "src/panel/panel.js"),
+        vendor: vendorModules,
+        panel: path.join(__dirname, "src/panel/index.js"),
         background: path.join(__dirname, "src/background.js"),
         content: path.join(__dirname, "src/content.js")
     },
@@ -42,7 +55,19 @@ const options = {
             },
             {
                 test: /\.css$/,
-                loader: "style-loader!css-loader",
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                importLoaders: 2,
+                                modules: true,
+                                localIdentName: '[name]__[local]--[hash:base64:5]'
+                            }
+                        }
+                    ]
+                }),
                 exclude: /node_modules/
             },
             {
@@ -62,6 +87,7 @@ const options = {
         ]
     },
     resolve: {
+        extensions: ['.js', '.jsx'],
         alias: alias
     },
     plugins: [
@@ -82,17 +108,25 @@ const options = {
                 }))
             }
         }]),
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src/panel/panel.ejs"),
-            filename: "panel.html",
-            chunks: ["panel"]
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor'],
         }),
-        new WriteFilePlugin()
-    ]
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, "src/panel/index.ejs"),
+            filename: "panel.html",
+            chunks: ["vendor", "panel"]
+        }),
+        new WriteFilePlugin(),
+        new ExtractTextPlugin({
+            filename: 'style.css'
+        })
+    ],
+    customConfig: {}
 };
 
 if (env.NODE_ENV === "development") {
     options.devtool = "cheap-module-eval-source-map";
+    options.customConfig.notHotReload = notHotReload;
 }
 
 module.exports = options;

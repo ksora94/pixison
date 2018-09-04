@@ -1,0 +1,123 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block
+}
+
+body {
+    line-height: 1
+}
+
+ol, ul {
+    list-style: none
+}
+
+blockquote, q {
+    quotes: none
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+linkHover MUST be true a:hover {
+    text-decoration: underline
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+html, input[type="text"], input[type="password"], button, input[type="submit"] {
+    font-family: Helvetica, "Microsoft Yahei", "Simhei";
+    font-size: 16px
+}
+
+input[type="text"]:focus, input[type="password"]:focus, button:focus, input[type="submit"]:focus {
+    outline: none
+}
+
+button, input[type="submit"] {
+    cursor: pointer
+}
+
+html {
+    color: #222
+}
+
+.f-s {
+    font-size: 12px
+}
+
+.f-m {
+    font-size: 14px
+}
+
+.f-l {
+    font-size: 16px
+}
+
+.f-xl {
+    font-size: 18px
+}
+
+.f-xxl {
+    font-size: 20px
+}
+
+a {
+    color: #222;
+    text-decoration: none
+}
+
+li {
+    list-style-type: none
+}
+
+input[type="text"], input[type="password"] {
+    display: block;
+    padding: 0;
+    border: none
+}
+
+button, input[type="submit"] {
+    display: block;
+    border: none;
+    background-color: transparent
+}
+
+img {
+    display: block
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.clearFix:after {
+    content: ' ';
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden
+}
+
+.clearFix {
+    *zoom: 1
+}
