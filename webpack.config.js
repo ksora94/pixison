@@ -26,6 +26,12 @@ const vendorModules = [
     'react'
 ];
 
+const cssModulesConfig = {
+    importLoaders: 2,
+    modules: true,
+    localIdentName: '[name]__[local]--[hash:base64:5]'
+};
+
 if (fileSystem.existsSync(secretsPath)) {
     alias["secrets"] = secretsPath;
 }
@@ -60,11 +66,7 @@ const options = {
                     use: [
                         {
                             loader: 'css-loader',
-                            options: {
-                                importLoaders: 2,
-                                modules: true,
-                                localIdentName: '[name]__[local]--[hash:base64:5]'
-                            }
+                            options: cssModulesConfig
                         }
                     ]
                 }),
@@ -72,7 +74,18 @@ const options = {
             },
             {
                 test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader'
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: cssModulesConfig
+                        },
+                        {
+                            loader: 'sass-loader'
+                        }
+                    ]
+                })
             },
             {
                 test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
