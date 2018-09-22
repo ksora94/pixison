@@ -13,14 +13,12 @@ function getDataUrl(url, callback) {
     xhr.send();
 }
 
-chrome.runtime.onMessage.addListener((event) => {
-    const {type, srcUrl} = event;
-
-    if (type === 'IMAGE_LOAD_BEGIN') {
-        getDataUrl(srcUrl, dataUrl => {
+chrome.runtime.onMessage.addListener(({type, data}) => {
+    if (type === 'BACKGROUND:image_parse_begin') {
+        getDataUrl(data, dataUrl => {
             chrome.runtime.sendMessage({
-                type: 'IMAGE_PARSED_END',
-                dataUrl
+                type: 'CONTENT:image_parsed',
+                data: dataUrl
             });
         });
     }

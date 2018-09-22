@@ -1,20 +1,30 @@
 {
   "name": "pixison",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfoSsBCMCUOXjpI1Q8vNeYY+et03oF7BFEtDCb2mmsMRo+Q8NmwyPVAMLov+EiVVq7xM7rceC33QGfAOYl3Fxo4NgOtay7dWQw5xdXsup7zfUDlRiFU2wfR3U5JaLoqC50r2QYAHz1xOFEE7gsyvVQVkjh8BDVfUfu6K9t3jUVcQGJJ2s1o92NUpnsDiQbNWT0wGibQu4FfbIiDyUNz2uiqaZ+Twk2RPjc+A9w4ahAYpnbk2Vra+u28y/hi6YgHlRaICOPfTkWUTUo66H8JPN4fXn5JjydOZ8u2u+nqc3CH+TV6tcV1gQt80LSKwi/tV6PMRhsa15/bcrys0GPAo7QIDAQAB",
   "background": {
     "scripts": [
+      "vendor.js",
       "background.js"
     ]
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
+      "js": [ "content.js"]
     }
   ],
+  "oauth2": {
+    "client_id": "960722315005-038hdcorvbas32q90nccg18br9b5llc7.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/drive"
+    ]
+  },
   "permissions": [
     "contextMenus",
     "activeTab",
-    "tabs"
+    "tabs",
+    "identity"
   ],
   "browser_action": {
     "default_icon": "logo128.png",

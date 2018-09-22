@@ -1,29 +1,30 @@
-const webpack = require("webpack"),
-    path = require("path"),
-    fileSystem = require("fs"),
-    env = require("./build/env"),
-    ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    CleanWebpackPlugin = require("clean-webpack-plugin"),
-    CopyWebpackPlugin = require("copy-webpack-plugin"),
-    HtmlWebpackPlugin = require("html-webpack-plugin"),
-    WriteFilePlugin = require("write-file-webpack-plugin");
+const webpack = require('webpack'),
+    path = require('path'),
+    fileSystem = require('fs'),
+    env = require('./build/env'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    CleanWebpackPlugin = require('clean-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    WriteFilePlugin = require('write-file-webpack-plugin');
 
 // load the secrets
 const alias = {
-    '@': path.resolve(__dirname, 'src'),
+    '~': path.resolve(__dirname, 'src'),
     'assets': path.resolve(__dirname, 'src/assets'),
     'panel': path.resolve(__dirname, 'src/panel'),
-    'css': path.resolve(__dirname, 'src/css')
+    'css': path.resolve(__dirname, 'src/css'),
+    'js': path.resolve(__dirname, 'src/js')
 };
 
-const secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
+const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'));
 
-const fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
+const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
 
 const notHotReload = ['content'];
 
 const vendorModules = [
-    'react'
+    'react', 'react-dom', 'react-router-dom', '@material-ui/core'
 ];
 
 const cssModulesConfig = {
@@ -33,19 +34,19 @@ const cssModulesConfig = {
 };
 
 if (fileSystem.existsSync(secretsPath)) {
-    alias["secrets"] = secretsPath;
+    alias['secrets'] = secretsPath;
 }
 
 const options = {
     entry: {
         vendor: vendorModules,
-        panel: path.join(__dirname, "src/panel/index.js"),
-        background: path.join(__dirname, "src/background.js"),
-        content: path.join(__dirname, "src/content.js")
+        panel: path.join(__dirname, 'src/panel/index.js'),
+        background: path.join(__dirname, 'src/background.js'),
+        content: path.join(__dirname, 'src/content.js')
     },
     output: {
-        path: path.join(__dirname, "dist"),
-        filename: "[name].js"
+        path: path.join(__dirname, 'dist'),
+        filename: '[name].js'
     },
     module: {
         rules: [
@@ -62,7 +63,7 @@ const options = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -75,7 +76,7 @@ const options = {
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
+                    fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader',
@@ -89,12 +90,12 @@ const options = {
             },
             {
                 test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
-                loader: "file-loader?name=[name].[ext]",
+                loader: 'file-loader?name=[name].[ext]',
                 exclude: /node_modules/
             },
             {
                 test: /\.html$/,
-                loader: "html-loader",
+                loader: 'html-loader',
                 exclude: /node_modules/
             }
         ]
@@ -105,13 +106,13 @@ const options = {
     },
     plugins: [
         // clean the build folder
-        new CleanWebpackPlugin(["dist"]),
+        new CleanWebpackPlugin(['dist']),
         // expose and write the allowed env vars on the compiled bundle
         new webpack.DefinePlugin({
-            "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
+            'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV)
         }),
         new CopyWebpackPlugin([{
-            from: "src/manifest.json",
+            from: 'src/manifest.json',
             transform: function (content, path) {
                 // generates the manifest file using the package.json informations
                 return Buffer.from(JSON.stringify({
@@ -123,11 +124,12 @@ const options = {
         }]),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
+            chunks: ['panel']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src/panel/index.ejs"),
-            filename: "panel.html",
-            chunks: ["vendor", "panel"]
+            template: path.join(__dirname, 'src/panel/index.ejs'),
+            filename: 'panel.html',
+            chunks: ['vendor', 'panel']
         }),
         new WriteFilePlugin(),
         new ExtractTextPlugin({
@@ -137,8 +139,8 @@ const options = {
     customConfig: {}
 };
 
-if (env.NODE_ENV === "development") {
-    options.devtool = "cheap-module-eval-source-map";
+if (env.NODE_ENV === 'development') {
+    options.devtool = 'cheap-module-eval-source-map';
     options.customConfig.notHotReload = notHotReload;
 }
 
