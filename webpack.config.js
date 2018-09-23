@@ -11,6 +11,7 @@ const webpack = require('webpack'),
 // load the secrets
 const alias = {
     '~': path.resolve(__dirname, 'src'),
+    'components': path.resolve(__dirname, 'src/components'),
     'assets': path.resolve(__dirname, 'src/assets'),
     'panel': path.resolve(__dirname, 'src/panel'),
     'css': path.resolve(__dirname, 'src/css'),
