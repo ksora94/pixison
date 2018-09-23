@@ -8,12 +8,10 @@ const initialState = {
 const reducer = {
     SET_TOKEN: function (state, action) {
         state.token = action.data;
-        console.log(action.data);
         return state;
     },
     SET_DATA_URL: function (state, action) {
         state.dataUrl = action.data;
-        console.log(action.data);
         return state;
     }
 };

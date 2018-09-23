@@ -14,7 +14,7 @@ class Authority extends Component {
     }
 
     componentDidMount() {
-        Authority.getToken()
+        Promise.all([Authority.getToken(), Authority.getGAPIClient()])
             .then(token => {
                chrome.runtime.sendMessage({
                    type: 'PANEL:authorized',
@@ -53,6 +53,10 @@ class Authority extends Component {
                 resolve(data);
             });
         })
+    }
+
+    static getGAPIClient() {
+        return new Promise(resolve => gapi.load('client', resolve()));
     }
 
     render() {
