@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {Loader} from 'rsuite';
 import classNames from 'classnames/bind';
 import style from './authority.scss';
 import store from 'panel/store';
@@ -62,7 +62,7 @@ class Authority extends Component {
     render() {
         return (
             <div className={cx('con')}>
-                <CircularProgress size={28} className={cx('loading')} style={{color: '#00b1d4'}}/>
+                <Loader/>
             </div>
         )
     }

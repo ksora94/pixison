@@ -67,12 +67,10 @@ const options = {
                     fallback: 'style-loader',
                     use: [
                         {
-                            loader: 'css-loader',
-                            options: cssModulesConfig
+                            loader: 'css-loader'
                         }
                     ]
-                }),
-                exclude: /node_modules/
+                })
             },
             {
                 test: /\.scss$/,
