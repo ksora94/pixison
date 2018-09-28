@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import SubMenu from './SubMenu'
 
 class App extends Component {
     constructor(props) {
@@ -7,7 +8,9 @@ class App extends Component {
 
     render() {
         return (
-            <div>app</div>
+            <div>
+                <SubMenu/>
+            </div>
         )
     }
 }

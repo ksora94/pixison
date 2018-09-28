@@ -1,3 +1,5 @@
+@import "css/colors.scss";
+
 .con{
     height: 100%;
     text-align: center;
@@ -5,4 +7,9 @@
 
 .loading{
     margin-top: 36px;
+    :global {
+        .rs-loader-spin::after {
+            border-color: $base transparent transparent;
+        }
+    }
 }

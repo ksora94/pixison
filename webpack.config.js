@@ -14,18 +14,19 @@ const alias = {
     'components': path.resolve(__dirname, 'src/components'),
     'assets': path.resolve(__dirname, 'src/assets'),
     'panel': path.resolve(__dirname, 'src/panel'),
+    'option': path.resolve(__dirname, 'src/option'),
     'css': path.resolve(__dirname, 'src/css'),
     'js': path.resolve(__dirname, 'src/js')
 };
 
 const secretsPath = path.join(__dirname, ('secrets.' + env.NODE_ENV + '.js'));
 
-const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
+const fileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
 const notHotReload = ['content'];
 
 const vendorModules = [
-    'react', 'react-dom', 'react-router-dom', '@material-ui/core'
+    'react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'rsuite'
 ];
 
 const cssModulesConfig = {
@@ -42,6 +43,7 @@ const options = {
     entry: {
         vendor: vendorModules,
         panel: path.join(__dirname, 'src/panel/index.js'),
+        option:path.join(__dirname, 'src/option/index.js'),
         background: path.join(__dirname, 'src/background.js'),
         content: path.join(__dirname, 'src/content.js')
     },
@@ -62,12 +64,21 @@ const options = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
                         {
                             loader: 'css-loader'
+                        }, {
+                            loader: "less-loader",
+                            options: {
+                                javascriptEnabled: true,
+                                modifyVars: {
+                                    'base-color': '#00b1d4',
+                                    'icon-font-path': './fonts'
+                                }
+                            }
                         }
                     ]
                 })
@@ -86,6 +97,19 @@ const options = {
                         }
                     ]
                 })
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|svg)($|\?)/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 1,
+                            size: 16,
+                            publicPath: '/'
+                        }
+                    }
+                ]
             },
             {
                 test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
@@ -123,16 +147,21 @@ const options = {
         }]),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
-            chunks: ['panel']
+            chunks: ['panel', 'option']
         }),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src/panel/index.ejs'),
             filename: 'panel.html',
             chunks: ['vendor', 'panel']
         }),
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, 'src/option/index.ejs'),
+            filename: 'option.html',
+            chunks: ['vendor', 'option']
+        }),
         new WriteFilePlugin(),
         new ExtractTextPlugin({
-            filename: 'style.css'
+            filename: '[name].css'
         })
     ],
     customConfig: {}

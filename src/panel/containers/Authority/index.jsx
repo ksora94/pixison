@@ -8,9 +8,19 @@ import event from 'js/event';
 
 const cx = classNames.bind(style);
 
+const STATUS_MAP = {
+    'GET_TOKEN:start': <span>获取用户信息</span>,
+    'GET_TOKEN:fail': <span>获取用户信息失败</span>,
+    'GET_DATA_URL:start': <span>初始化图片数据</span>
+};
+
 class Authority extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            status: 'GET_TOKEN:start'
+        }
     }
 
     componentDidMount() {
@@ -20,9 +30,17 @@ class Authority extends Component {
                    type: 'PANEL:authorized',
                    data: token
                });
+                this.setState({
+                    status: 'GET_DATA_URL:start'
+                });
 
                return Authority.getDataUrl();
-            }).then(() => this.props.history.replace('/processing'));
+            }).then(() => this.props.history.replace('/processing'))
+            .catch(e => {
+                this.setState({
+                    status: e
+                })
+            });
     }
 
     static getToken() {
@@ -37,7 +55,7 @@ class Authority extends Component {
                     });
                     resolve(token)
                 } else {
-                    reject();
+                    reject('GET_TOKEN:fail');
                 }
             })
         })
@@ -60,9 +78,15 @@ class Authority extends Component {
     }
 
     render() {
+        const {status} = this.state;
+
         return (
             <div className={cx('con')}>
-                <Loader/>
+                <Loader
+                    content={STATUS_MAP[status]}
+                    className={cx('loading')}
+                    size={'md'}
+                />
             </div>
         )
     }

@@ -14,6 +14,7 @@
       "js": [ "content.js"]
     }
   ],
+  "options_page": "option.html",
   "oauth2": {
     "client_id": "960722315005-038hdcorvbas32q90nccg18br9b5llc7.apps.googleusercontent.com",
     "scopes": [
