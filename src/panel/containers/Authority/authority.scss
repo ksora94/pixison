@@ -1,7 +1,6 @@
 @import "css/colors.scss";
 
 .con{
-    height: 100%;
     text-align: center;
 }
 
@@ -12,4 +11,8 @@
             border-color: $base transparent transparent;
         }
     }
+}
+
+.text{
+    font-size: 12px;
 }

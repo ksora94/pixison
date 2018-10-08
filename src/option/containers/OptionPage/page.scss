@@ -1,0 +1,13 @@
+.con{
+    display: flex;
+    height: 100%;
+}
+
+.pages{
+    width: 200px;
+    height: 100%;
+}
+
+.content{
+    flex-grow: 1;
+}

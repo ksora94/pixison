@@ -6,7 +6,7 @@ import Processing from 'panel/containers/Processing';
 class App extends Component{
     render() {
         return (
-            <div style={{height:'100px',width:'300px'}}>
+            <div>
                 <Route exact path='/' component={Authority} />
                 <Route path='/processing' component={Processing}/>
             </div>

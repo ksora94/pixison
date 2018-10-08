@@ -9,9 +9,9 @@ import event from 'js/event';
 const cx = classNames.bind(style);
 
 const STATUS_MAP = {
-    'GET_TOKEN:start': <span>获取用户信息</span>,
-    'GET_TOKEN:fail': <span>获取用户信息失败</span>,
-    'GET_DATA_URL:start': <span>初始化图片数据</span>
+    'GET_TOKEN:start': '获取用户信息',
+    'GET_TOKEN:fail': '获取用户信息失败',
+    'GET_DATA_URL:start': '初始化图片数据'
 };
 
 class Authority extends Component {
@@ -81,9 +81,9 @@ class Authority extends Component {
         const {status} = this.state;
 
         return (
-            <div className={cx('con')}>
+            <div className={cx('container', 'con')}>
                 <Loader
-                    content={STATUS_MAP[status]}
+                    content={<span className={cx('text')}>{STATUS_MAP[status]}</span>}
                     className={cx('loading')}
                     size={'md'}
                 />

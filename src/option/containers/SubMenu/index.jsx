@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 import style from './subMenu.scss';
 import {Sidenav, Nav, Icon} from 'rsuite';
 
@@ -7,18 +7,52 @@ const cx = classNames.bind(style);
 
 class SubMenu extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+        this.state = {
+            selected: 'setting'
+        };
+    }
+
+    goOption(optionId) {
+        if (this.state.selected === optionId) return;
+        this.props.history.push('/' + optionId);
+        this.setState({
+            selected: optionId
+        })
     }
 
     render() {
+        const {selected} = this.state;
+        const navList = [{
+            title: '全局设置',
+            icon: 'setting',
+            id: 'setting'
+        }, {
+            title: '页面管理',
+            icon: 'web',
+            id: 'page'
+        }, {
+            title: '模板管理',
+            icon: 'book',
+            id: 'template'
+        }];
+
         return (
-            <div>
-                <Sidenav defaultOpenKeys={['3', '4']} activeKey="1">
+            <div className={cx('con')}>
+                <div className={cx('logo')} />
+                <Sidenav
+                    expanded={false}
+                    activeKey={selected}
+                    appearance="subtle"
+                    onSelect={this.goOption.bind(this)}>
                     <Sidenav.Body>
                         <Nav>
-                            <Nav.Item eventKey="1" icon={<Icon icon="dashboard" />}>
-                                Dashboard
-                            </Nav.Item>
+                            {navList.map(item =>
+                                <Nav.Item key={item.id} eventKey={item.id} icon={<Icon icon={item.icon}/>}>
+                                    {item.title}
+                                </Nav.Item>
+                            )}
                         </Nav>
                     </Sidenav.Body>
                 </Sidenav>

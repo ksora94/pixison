@@ -1,0 +1,23 @@
+html, body{
+    height: 100%;
+}
+
+:global{
+    #app{
+        height: 100%;
+        &>div{
+            height: 100%;
+        }
+    }
+    .container{
+        height: 100%;
+    }
+    .option-container{
+        display: flex;
+        padding: 20px 100px;
+    }
+    .option-main{
+        flex: 1 0 auto;
+        padding: 56px 106px;
+    }
+}

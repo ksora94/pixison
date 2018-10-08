@@ -2,6 +2,7 @@ import 'assets/image/logo16.png'
 import 'assets/image/logo48.png'
 import 'assets/image/logo128.png'
 import event from 'js/event';
+import storage from 'js/storage';
 
 const cm = window.chrome;
 
@@ -11,6 +12,7 @@ let currentTab = {
 };
 let currentPanel = null;
 
+storage.init();
 
 cm.windows.onRemoved.addListener (id => {
     if (currentPanel && currentPanel.id === id) currentPanel = null;
