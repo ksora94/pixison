@@ -1,3 +1,5 @@
+import {parser} from 'js/functions';
+
 function getDataUrl(url, callback) {
     const xhr = new XMLHttpRequest();
 
@@ -18,7 +20,11 @@ chrome.runtime.onMessage.addListener(({type, data}) => {
         getDataUrl(data, dataUrl => {
             chrome.runtime.sendMessage({
                 type: 'CONTENT:image_parsed',
-                data: dataUrl
+                data: {
+                    dataUrl,
+                    name: parser('$CSS(figcaption > div > div > h1)')
+                },
+
             });
         });
     }

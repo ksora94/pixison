@@ -18,16 +18,16 @@ class Processing extends Component {
     }
 
     render() {
-        const {dataUrl, token} = this.props;
+        const {dataUrl, token, name} = this.props;
         const data = {
-            name: 'flower',
             description: 'test',
-            dataUrl
+            dataUrl, name
         };
 
         return(
             <div>
                 <Uploader token={token} data={data}>upload</Uploader>
+                {name}
                 <img src={dataUrl}/>
             </div>
         )
@@ -37,6 +37,7 @@ class Processing extends Component {
 export default connect(
     state => ({
         token: state.token,
-        dataUrl: state.dataUrl
+        dataUrl: state.dataUrl,
+        name: state.name
     })
 )(Processing);

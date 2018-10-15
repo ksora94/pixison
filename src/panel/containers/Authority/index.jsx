@@ -63,10 +63,14 @@ class Authority extends Component {
 
     static getDataUrl() {
         return new Promise(resolve => {
-            event.add('CONTENT:image_parsed', data=> {
+            event.add('CONTENT:image_parsed', data => {
                 store.dispatch({
                     type: 'SET_DATA_URL',
-                    data
+                    data: data.dataUrl
+                });
+                store.dispatch({
+                    type: 'SET_NAME',
+                    data: data.name
                 });
                 resolve(data);
             });

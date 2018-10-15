@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class Uploader extends Component {
     constructor(props) {
@@ -56,5 +57,15 @@ class Uploader extends Component {
 
     }
 }
+
+Uploader.defaultProps = {
+    onSuccess: () => {}
+};
+
+Uploader.propTypes = {
+    token: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
+    onSuccess: PropTypes.func
+};
 
 export default Uploader;

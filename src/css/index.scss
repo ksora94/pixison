@@ -1,6 +1,19 @@
+@import "./colors.scss";
+
 html, body{
     height: 100%;
 }
+
+::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+    background-color: $grey;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $base;
+}
+
 
 :global{
     #app{
@@ -18,6 +31,7 @@ html, body{
     }
     .option-main{
         flex: 1 0 auto;
+        width: 100%;
         padding: 56px 106px;
     }
 }

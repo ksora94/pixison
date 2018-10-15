@@ -6,6 +6,7 @@ const webpack = require('webpack'),
     CleanWebpackPlugin = require('clean-webpack-plugin'),
     CopyWebpackPlugin = require('copy-webpack-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
+    BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
     WriteFilePlugin = require('write-file-webpack-plugin');
 
 // load the secrets
@@ -26,7 +27,7 @@ const fileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 const notHotReload = ['content'];
 
 const vendorModules = [
-    'react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'rsuite'
+    'react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'rsuite', 'lodash'
 ];
 
 const cssModulesConfig = {
@@ -43,7 +44,7 @@ const options = {
     entry: {
         vendor: vendorModules,
         panel: path.join(__dirname, 'src/panel/index.js'),
-        option:path.join(__dirname, 'src/option/index.js'),
+        option: path.join(__dirname, 'src/option/index.js'),
         background: path.join(__dirname, 'src/background.js'),
         content: path.join(__dirname, 'src/content.js')
     },
@@ -171,5 +172,29 @@ if (env.NODE_ENV === 'development') {
     options.devtool = 'cheap-module-eval-source-map';
     options.customConfig.notHotReload = notHotReload;
 }
+
+if (env.NODE_ENV !== 'development') {
+    options.plugins = options.plugins.concat([
+        new webpack.optimize.UglifyJsPlugin({
+            comments: false,
+            compress: {
+                warnings: false
+            }
+        })
+    ]);
+}
+
+if (env.NODE_ENV === 'analyze') {
+    options.plugins = options.plugins.concat([
+        new BundleAnalyzerPlugin(
+            {
+                analyzerMode: 'server',
+                analyzerHost: '127.0.0.1',
+                analyzerPort: 8001
+            }
+        )
+    ])
+}
+
 
 module.exports = options;

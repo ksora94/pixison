@@ -1,0 +1,15 @@
+.con{
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.title{
+    flex: 1 0 auto;
+    width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 36px;
+}

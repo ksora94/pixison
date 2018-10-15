@@ -10,6 +10,10 @@ class App extends Component {
         super(props)
     }
 
+    componentDidCatch(error, info) {
+        console.error(error, info);
+    }
+
     render() {
         return (
             <div className="option-container">

@@ -1,0 +1,24 @@
+@import "css/colors.scss";
+
+.input{
+    display: flex;
+    border-radius: 6px;
+    border: 1px solid $grey-deep;
+    transition: border-color ease-in-out 0.3s;
+    &.focus {
+        border-color: $base;
+    }
+    :global{
+        .rs-input{
+            flex: 3 0 auto;
+            width: 0;
+            border: none;
+        }
+        .preview{
+            flex: 0 1 40%;
+            padding: 7px 11px;
+            border-left: 1px solid $grey-deep;
+            word-break: break-all;
+        }
+    }
+}

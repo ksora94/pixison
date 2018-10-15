@@ -4,16 +4,16 @@ const cst = {
         url: '*',
         target: 'default',
         system: true,
-        expressions: ['$Title()', '$Title()-$Time()']
+        expressions: ['$Title()', '$Time()']
     }],
     DEFAULT_TEMPLATES: [{
         name: '网页标题',
         system: true,
         expression: '$Title()'
     }, {
-        name: '网页标题-时间',
+        name: '时间',
         system: true,
-        expression: '$Title()-$Time()'
+        expression: '$Time()'
     }]
 };
 

@@ -3,12 +3,18 @@ export const functions = {
         name: '网页标题',
         parser() {
             return document.title;
+        },
+        previewer() {
+            return 'PageTitle'
         }
     },
     'Host': {
         name: '网站',
         parser() {
             return location.host;
+        },
+        previewer() {
+            return 'https://*'
         }
     },
     'Date': {
@@ -17,6 +23,9 @@ export const functions = {
             const now = new Date();
 
             return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+        },
+        previewer() {
+            return 'YYYY-MM-DD'
         }
     },
     'Time': {
@@ -25,6 +34,9 @@ export const functions = {
             const now = new Date();
 
             return `${now.getHours()}-${now.getMinutes() + 1}-${now.getSeconds()}`
+        },
+        previewer() {
+            return 'HH-mm-ss'
         }
     },
     'CSS': {
@@ -33,11 +45,17 @@ export const functions = {
             const node = document.querySelector(selector);
 
             return node ? node.innerText.replace(/\n/g, '') : '';
+        },
+        previewer(selector) {
+            return `CSS (${selector.length > 8 ? selector.slice(0, 8) + '...' : selector})`
         }
     },
-    'SLICE': {
+    'Slice': {
         name: '切割',
         parser(str, begin, end) {
+            return str.slice(+begin, +end);
+        },
+        previewer(str, begin, end) {
             return str.slice(+begin, +end);
         }
     }
@@ -50,7 +68,7 @@ for (let key in functions) {
     }
 }
 
-export const parser = function (expression, errorHandler) {
+export const compiler = function (expression, handler, errorHandler) {
     let result = expression;
     const func = Object.keys(functions).map(f => '\\$' + f);
     const regExp = new RegExp(`(${func.join('|')})\\([^\(\)]*\\)`, 'g');
@@ -64,12 +82,21 @@ export const parser = function (expression, errorHandler) {
         let args = str.slice(argsBeginAt + 1, -1).split(',').map(a => a.trim());
 
         try {
-            return functions[funcName].parser(...args);
+            return handler(functions[funcName], args);
         } catch (e) {
             error(funcName, args);
             console.error(e);
+            return '';
         }
     });
 
-    return parser(result);
+    return compiler(result, handler);
+};
+
+export const parser = function (expression, errorHandler) {
+    return compiler(expression, (func, args) => func.parser(...args), errorHandler);
+};
+
+export const previewer = function (expression, errorHandler) {
+    return compiler(expression, (func, args) => func.previewer(...args), errorHandler);
 };

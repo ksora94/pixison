@@ -4,6 +4,7 @@
   "description": "Add web image to your google drive",
   "scripts": {
     "build": "export NODE_ENV=production&&node build/build.js",
+    "analyze": "export NODE_ENV=analyze&&node build/build.js",
     "start": "export NODE_ENV=development&&node build/webserver.js"
   },
   "devDependencies": {
@@ -26,12 +27,14 @@
     "style-loader": "^0.13.2",
     "url-loader": "^1.1.1",
     "webpack": "^3.3.0",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-dev-server": "^2.11.3",
     "write-file-webpack-plugin": "3.4.2"
   },
   "dependencies": {
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",

@@ -2,7 +2,8 @@ import {createStore} from 'redux';
 
 const initialState = {
     token: null,
-    dataUrl: ''
+    dataUrl: '',
+    name: ''
 };
 
 const reducer = {
@@ -13,10 +14,14 @@ const reducer = {
     SET_DATA_URL: function (state, action) {
         state.dataUrl = action.data;
         return state;
+    },
+    SET_NAME: function (state, action) {
+        state.name = action.data;
+        return state;
     }
 };
 
 export default createStore(function (state = initialState, action) {
     return reducer[action.type]
-        ? Object.assign({}, reducer[action.type](state, action)) : state;
+        ? {...reducer[action.type](state, action)} : state;
 })

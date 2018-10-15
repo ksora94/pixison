@@ -10,13 +10,12 @@ class SubMenu extends Component {
         super(props);
 
         this.state = {
-            selected: 'setting'
+            selected: props.location.pathname.split('/')[1] || 'setting'
         };
     }
 
     goOption(optionId) {
-        if (this.state.selected === optionId) return;
-        this.props.history.push('/' + optionId);
+        this.props.history.replace('/' + optionId);
         this.setState({
             selected: optionId
         })
