@@ -23,8 +23,7 @@ chrome.runtime.onMessage.addListener(({type, data}) => {
                 data: {
                     dataUrl,
                     name: parser('$CSS(figcaption > div > div > h1)')
-                },
-
+                }
             });
         });
     }

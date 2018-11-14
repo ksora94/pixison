@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import classNames from 'classnames/bind';
 import style from './template.scss';
 import {Input, Panel} from "rsuite";
@@ -13,8 +12,7 @@ class TemplateInput extends Component {
         super(props);
 
         this.state = {
-            value: props.value,
-            expressionReview: '',
+            expressionReview: previewer(props.defaultValue),
             isError: false,
             focus: false
         };
@@ -24,8 +22,8 @@ class TemplateInput extends Component {
         const expressionReview = previewer(value, this.handleError);
 
         this.setState({
-            isError: true,
-            value, expressionReview
+            isError: false,
+            expressionReview
         });
 
         this.props.onChange({
@@ -46,8 +44,8 @@ class TemplateInput extends Component {
     }
 
     render() {
-        const {value, expressionReview, focus} = this.state;
-        const props = _.omit(this.props, ['value']);
+        const {expressionReview, focus} = this.state;
+        const {onChange, onBlur, onFocus, ...props} = this.props;
         const className = cx({
             input: true,
             focus
@@ -56,13 +54,12 @@ class TemplateInput extends Component {
         return (
             <div className={className}>
                 <Input
-                    {...props}
-                    value={value}
                     componentClass="textarea"
                     rows={6}
                     onChange={this.handleChange.bind(this)}
-                    onFocus={() => this.handleFocus(true)}
-                    onBlur={() => this.handleFocus(false)}
+                    onFocus={event => {this.handleFocus(true);onFocus(event)}}
+                    onBlur={event => {this.handleFocus(false);onBlur(event)}}
+                    {...props}
                 />
                 <div className='preview'>
                     {expressionReview}
@@ -73,13 +70,15 @@ class TemplateInput extends Component {
 }
 
 TemplateInput.defaultProps = {
-    value: '',
-    onChange: () => {}
+    onChange: () => {},
+    onBlur: () => {},
+    onFocus: () => {}
 };
 
 TemplateInput.propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func
 };
 
 export default TemplateInput;

@@ -1,42 +1,39 @@
 import React, {Component} from 'react';
-import {Route} from 'react-router-dom'
+import {Redirect, Route} from 'react-router-dom'
 import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
 import style from './template.scss';
 import {IconButton, Icon, Nav} from 'rsuite';
 import TemplateDetail from './TemplateDetail';
 import TemplateAdd from './TemplateAdd';
+import {selectTemplate} from 'option/store/actions';
 
 const cx = classNames.bind(style);
 
-const mapStateToProps = ({templateReducers}) => {
-    return {
-        templates: templateReducers.templates
-    };
-};
+const mapStateToProps = ({template}) => ({
+    templates: template.templates,
+    selected: template.selected
+});
+
+const mapDispatchToProps = dispatch => ({
+    selectTemplate(name) {
+        dispatch(selectTemplate(name));
+    }
+});
 
 class OptionTemplate extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selected: 0
-        }
     }
 
-    componentWillMount() {
-        this.changeSelected(0);
-    }
+    changeSelected(name) {
+        const {history, selectTemplate} = this.props;
 
-    changeSelected(event) {
-        const {templates, history} = this.props;
-
-        this.setState({
-            selected: event
-        });
+        selectTemplate(name);
         history.replace({
             pathname: '/template/detail',
             state: {
-                template: templates[event]
+                name
             }
         })
     }
@@ -48,8 +45,7 @@ class OptionTemplate extends Component {
     }
 
     render() {
-        const {templates} = this.props;
-        const {selected} = this.state;
+        const {templates, selected} = this.props;
 
         return (
             <div className={cx('con')}>
@@ -66,13 +62,14 @@ class OptionTemplate extends Component {
                         onSelect={this.changeSelected.bind(this)}
                         vertical
                     >
-                        {templates.map((item, index) =>
-                            <Nav.Item key={item.expression} eventKey={index}>
+                        {templates.map((item) =>
+                            <Nav.Item key={item.name} eventKey={item.name}>
                                 {item.name}
                             </Nav.Item>
                         )}
                     </Nav>
                 </div>
+                <Route exact path={'/template'} render={() => <Redirect to={'/template/detail'}/>} />
                 <Route path={'/template/detail'} component={TemplateDetail}/>
                 <Route path={'/template/add'} component={TemplateAdd}/>
             </div>
@@ -80,4 +77,4 @@ class OptionTemplate extends Component {
     }
 }
 
-export default connect(mapStateToProps)(OptionTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionTemplate);

@@ -1,9 +1,9 @@
 import {createStore, combineReducers} from 'redux';
-import pageReducers from './reducers/pageReducers';
-import templateReducers from './reducers/templateReducers';
+import page from './reducers/page';
+import template from './reducers/template';
 
 const reducers = combineReducers({
-    pageReducers, templateReducers
+    page, template
 });
 
 export default createStore(reducers);

@@ -26,10 +26,6 @@ const fileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
 const notHotReload = ['content'];
 
-const vendorModules = [
-    'react', 'react-dom', 'react-router-dom', 'redux', 'react-redux', 'rsuite', 'lodash'
-];
-
 const cssModulesConfig = {
     importLoaders: 2,
     modules: true,
@@ -42,7 +38,6 @@ if (fileSystem.existsSync(secretsPath)) {
 
 const options = {
     entry: {
-        vendor: vendorModules,
         panel: path.join(__dirname, 'src/panel/index.js'),
         option: path.join(__dirname, 'src/option/index.js'),
         background: path.join(__dirname, 'src/background.js'),
@@ -148,7 +143,8 @@ const options = {
         }]),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
-            chunks: ['panel', 'option']
+            chunks: ['panel', 'option'],
+            minChunks: 2
         }),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src/panel/index.ejs'),
