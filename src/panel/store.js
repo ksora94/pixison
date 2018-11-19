@@ -3,7 +3,8 @@ import {createStore} from 'redux';
 const initialState = {
     token: null,
     dataUrl: '',
-    name: ''
+    name: '',
+    rootFolder: localStorage.getItem('ROOT_FOLDER')
 };
 
 const reducer = {
@@ -18,6 +19,10 @@ const reducer = {
     SET_NAME: function (state, action) {
         state.name = action.data;
         return state;
+    },
+    SET_ROOT_FOLDER: function (state, action) {
+        state.id = action.id;
+        return {...state};
     }
 };
 

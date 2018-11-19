@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import style from './template.scss';
-import {Input, Panel} from "rsuite";
+import {Input} from "rsuite";
 import {previewer} from 'js/functions';
 
 const cx = classNames.bind(style);
@@ -12,29 +12,8 @@ class TemplateInput extends Component {
         super(props);
 
         this.state = {
-            expressionReview: previewer(props.defaultValue),
-            isError: false,
             focus: false
         };
-    }
-
-    handleChange(value) {
-        const expressionReview = previewer(value, this.handleError);
-
-        this.setState({
-            isError: false,
-            expressionReview
-        });
-
-        this.props.onChange({
-            value, expressionReview
-        })
-    }
-
-    handleError() {
-        this.setState({
-            isError: true
-        })
     }
 
     handleFocus(focus) {
@@ -44,8 +23,8 @@ class TemplateInput extends Component {
     }
 
     render() {
-        const {expressionReview, focus} = this.state;
-        const {onChange, onBlur, onFocus, ...props} = this.props;
+        const {focus} = this.state;
+        const {value, onBlur, onFocus, onChange, ...props} = this.props;
         const className = cx({
             input: true,
             focus
@@ -54,15 +33,16 @@ class TemplateInput extends Component {
         return (
             <div className={className}>
                 <Input
+                    value={value}
                     componentClass="textarea"
                     rows={6}
-                    onChange={this.handleChange.bind(this)}
+                    onChange={onChange.bind(this)}
                     onFocus={event => {this.handleFocus(true);onFocus(event)}}
                     onBlur={event => {this.handleFocus(false);onBlur(event)}}
                     {...props}
                 />
                 <div className='preview'>
-                    {expressionReview}
+                    {previewer(value)}
                 </div>
             </div>
         )
@@ -70,12 +50,14 @@ class TemplateInput extends Component {
 }
 
 TemplateInput.defaultProps = {
+    value: '',
     onChange: () => {},
     onBlur: () => {},
     onFocus: () => {}
 };
 
 TemplateInput.propTypes = {
+    value: PropTypes.string,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func

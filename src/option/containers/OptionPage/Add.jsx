@@ -4,18 +4,18 @@ import style from './page.scss';
 
 const cx = classNames.bind(style);
 
-class Content extends Component {
+class Add extends Component {
     constructor(props) {
         super(props)
     }
 
     render() {
         return (
-            <div className={cx('content')}>
+            <div>
 
             </div>
         )
     }
 }
 
-export default Content;
+export default Add;

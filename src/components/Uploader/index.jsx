@@ -49,7 +49,7 @@ class Uploader extends Component {
                     'Content-Type': 'multipart/mixed; boundary="' + boundary + '"',
                     'Authorization': 'Bearer ' + token,
                 },
-                body:multipartRequestBody
+                body: multipartRequestBody
             }).execute((file) => {
                 resolve(file)
             });

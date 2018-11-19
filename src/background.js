@@ -3,6 +3,7 @@ import 'assets/image/logo48.png'
 import 'assets/image/logo128.png'
 import event from 'js/event';
 import storage from 'js/storage';
+import service from 'js/service';
 
 const cm = window.chrome;
 

@@ -28,9 +28,6 @@ function init() {
     if (!get('PAGES')) {
         set('PAGES', cst.DEFAULT_PAGES);
     }
-    if (!get('TEMPLATES')) {
-        set('TEMPLATES', cst.DEFAULT_TEMPLATES);
-    }
 }
 
 export default {

@@ -1,69 +1,49 @@
 import React, {Component} from 'react';
 import {Redirect, Route} from 'react-router-dom'
-import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
 import style from './template.scss';
-import {IconButton, Icon, Nav} from 'rsuite';
-import TemplateDetail from './TemplateDetail';
-import TemplateAdd from './TemplateAdd';
-import {selectTemplate} from 'option/store/actions';
+import {Nav} from 'rsuite';
+import TemplateDetail from './Detail';
+import {functionsArray} from 'js/functions';
 
 const cx = classNames.bind(style);
-
-const mapStateToProps = ({template}) => ({
-    templates: template.templates,
-    selected: template.selected
-});
-
-const mapDispatchToProps = dispatch => ({
-    selectTemplate(name) {
-        dispatch(selectTemplate(name));
-    }
-});
 
 class OptionTemplate extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            functions: functionsArray,
+            selected: functionsArray[0].key
+        }
     }
 
-    changeSelected(name) {
-        const {history, selectTemplate} = this.props;
+    changeSelected(key) {
+        const {history} = this.props;
 
-        selectTemplate(name);
-        history.replace({
-            pathname: '/template/detail',
-            state: {
-                name
-            }
+        history.replace(`/template/detail?key=${key}`);
+        this.setState({
+            selected: key
         })
     }
 
-    goTemplateAdd() {
-        this.props.history.replace({
-            pathname: '/template/add'
-        })
+    componentDidMount() {
+        this.changeSelected(functionsArray[0].key);
     }
 
     render() {
-        const {templates, selected} = this.props;
+        const {functions, selected} = this.state;
 
         return (
             <div className={cx('con')}>
                 <div className={cx('nav')}>
-                    <div className={cx('nav-top')}>
-                        <IconButton
-                            appearance={'subtle'}
-                            icon={<Icon icon={'plus-circle'}/>}
-                            onClick={() => this.goTemplateAdd()}
-                        >添加</IconButton>
-                    </div>
                     <Nav
                         activeKey={selected}
                         onSelect={this.changeSelected.bind(this)}
                         vertical
                     >
-                        {templates.map((item) =>
-                            <Nav.Item key={item.name} eventKey={item.name}>
+                        {functions.map((item) =>
+                            <Nav.Item key={item.key} eventKey={item.key}>
                                 {item.name}
                             </Nav.Item>
                         )}
@@ -71,10 +51,9 @@ class OptionTemplate extends Component {
                 </div>
                 <Route exact path={'/template'} render={() => <Redirect to={'/template/detail'}/>} />
                 <Route path={'/template/detail'} component={TemplateDetail}/>
-                <Route path={'/template/add'} component={TemplateAdd}/>
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OptionTemplate);
+export default OptionTemplate;

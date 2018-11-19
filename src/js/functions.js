@@ -77,9 +77,9 @@ export const compiler = function (expression, handler, errorHandler) {
 
     if (!regExp.test(expression)) return result;
     result = expression.replace(regExp, str => {
-        let argsBeginAt = str.indexOf('(');
-        let funcName = str.slice(1, argsBeginAt);
-        let args = str.slice(argsBeginAt + 1, -1).split(',').map(a => a.trim());
+        const argsBeginAt = str.indexOf('(');
+        const funcName = str.slice(1, argsBeginAt);
+        const args = str.slice(argsBeginAt + 1, -1).split(',').map(a => a.trim());
 
         try {
             return handler(functions[funcName], args);

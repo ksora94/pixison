@@ -1,37 +1,45 @@
 @import "./colors.scss";
 
-html, body{
+html, body {
     height: 100%;
 }
 
 ::-webkit-scrollbar {
     width: 2px;
     height: 2px;
-    background-color: $grey;
+    background-color: $grey-light;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: $base;
 }
 
-
-:global{
-    #app{
+:global {
+    #app {
         height: 100%;
-        &>div{
+        & > div {
             height: 100%;
         }
     }
-    .container{
+    .container {
         height: 100%;
     }
-    .option-container{
+    .option-container {
         display: flex;
         padding: 20px 100px;
     }
-    .option-main{
+    .option-main {
         flex: 1 0 auto;
         width: 100%;
         padding: 56px 106px;
+        &_load {
+            display: flex;
+            flex: 1 0 auto;
+            align-items: center;
+            justify-content: center;
+            .rs-loader-spin::after {
+                border-color: $base transparent transparent;
+            }
+        }
     }
 }

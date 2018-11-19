@@ -9,13 +9,7 @@
 .nav{
     flex: 0 0 160px;
     overflow: auto;
-    border-right: 1px solid $grey;
-    #{&}-top {
-        display: flex;
-        justify-content: flex-end;
-        padding: 0 8px;
-        margin-bottom: 8px;
-    }
+    border-right: 1px solid $grey-light;
 }
 
 
