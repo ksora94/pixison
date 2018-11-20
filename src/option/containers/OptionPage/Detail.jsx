@@ -18,7 +18,14 @@ class Detail extends Component {
         super(props);
 
         this.state = {
-            name: ''
+            url: '',
+            disabled: false,
+            formValue: {
+                name: '',
+                url: '',
+                target: '',
+                expressions: []
+            }
         };
     }
 
@@ -29,24 +36,34 @@ class Detail extends Component {
     updateData(props) {
         const {url} = qs.parse(props.location.search.slice(1));
         const item = props.pages.find(f => f.url === url);
+        const {name, target, expressions} = item;
 
-        if (item) {
+        if (item && url !== this.state.url) {
             this.setState({
-                name: item.name
+                url,
+                disabled: item.system,
+                formValue: {
+                    name, url, target, expressions
+                }
             })
         }
     }
 
     render() {
-        const {name} = this.state;
+        const {url, disabled, formValue} = this.state;
 
         return (
             <div className={cx('main')}>
-                <Header disabled>
-                    {name}
+                <Header disabled={disabled}>
+                    {url}
                 </Header>
                 <div className={cx('body')}>
-                    <PageForm/>
+                    <PageForm
+                        mode={'detail'}
+                        value={formValue}
+                        disabled={disabled}
+                        onChange={formValue => this.setState({formValue})}
+                    />
                 </div>
             </div>
         )

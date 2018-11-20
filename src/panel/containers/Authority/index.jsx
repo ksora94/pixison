@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Loader} from 'rsuite';
+
 import classNames from 'classnames/bind';
 import style from './authority.scss';
 import store from 'panel/store';
-import 'js/gapi'
 import event from 'js/event';
 import {getToken} from 'js/service';
 import service from "~/js/service";
+import storage from "~/js/storage";
 
 const cx = classNames.bind(style);
 
@@ -68,9 +69,9 @@ class Authority extends Component {
         this.setState({
             status: 'INIT_ROOT_FOLDER:start'
         });
-        if (rootFolder) {
+        if (rootFolder.id) {
             return service('getFileDetail', token, {
-                id: rootFolder
+                id: rootFolder.id
             }).catch(res => {
                 if (res.code = '404') {
                     return this.createRootFolder();
@@ -88,9 +89,9 @@ class Authority extends Component {
         }).then(res => {
             store.dispatch({
                 type: 'SET_ROOT_FOLDER',
-                data: res.id
+                data: res
             });
-            localStorage.setItem('ROOT_FOLDER', res.id);
+            storage.set('ROOT_FOLDER', res);
         }).catch(() => {
             throw new Error('INIT_ROOT_FOLDER:fail');
         })

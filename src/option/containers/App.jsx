@@ -8,6 +8,7 @@ import OptionSetting from './OptionSetting';
 import OptionPage from './OptionPage';
 import OptionTemplate from './OptionTemplate';
 import service, {getToken} from 'js/service';
+import storage from 'js/storage';
 import 'js/gapi';
 
 const mapStateToProps = ({global}) => ({
@@ -48,9 +49,9 @@ class App extends Component {
                 loaded: true
             });
 
-            if (rootFolder) {
+            if (rootFolder.id) {
                 service('getFileDetail', token, {
-                    id: rootFolder
+                    id: rootFolder.id
                 }).catch(res => {
                     if (res.code = '404') {
                         this.createRootFolder();
@@ -66,8 +67,8 @@ class App extends Component {
         service('createFolder', this.props.token, {
             title: 'Pixison'
         }).then(res => {
-            this.props.setRootFolder(res.id);
-            localStorage.setItem('ROOT_FOLDER', res.id);
+            this.props.setRootFolder(res);
+            storage.set('ROOT_FOLDER', res);
         })
     }
 

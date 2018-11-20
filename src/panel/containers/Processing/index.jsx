@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
+
 import style from './processing.scss';
 import Uploader from 'components/Uploader'
 

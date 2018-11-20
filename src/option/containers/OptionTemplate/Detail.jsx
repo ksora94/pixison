@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import style from './template.scss';
 import {functionsArray} from 'js/functions';
 import Header from 'components/Header'
-import TemplateInput from 'components/TemplateInut';
+import TemplateInput from 'components/TemplateInput';
 
 const cx = classNames.bind(style);
 

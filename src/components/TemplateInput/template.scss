@@ -5,6 +5,7 @@
     border-radius: 6px;
     border: 1px solid $grey-deep;
     transition: border-color ease-in-out 0.3s;
+    background-color: #fff;
     &.focus {
         border-color: $base;
     }
@@ -16,9 +17,11 @@
         }
         .preview{
             flex: 0 1 40%;
-            padding: 7px 11px;
+            margin-right: 6px;
+            padding: 7px 5px 7px 11px;
             border-left: 1px solid $grey-deep;
             word-break: break-all;
+            overflow: auto;
         }
     }
 }

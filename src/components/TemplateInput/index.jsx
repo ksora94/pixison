@@ -24,7 +24,7 @@ class TemplateInput extends Component {
 
     render() {
         const {focus} = this.state;
-        const {value, onBlur, onFocus, onChange, ...props} = this.props;
+        const {value, as, onBlur, onFocus, ...props} = this.props;
         const className = cx({
             input: true,
             focus
@@ -34,9 +34,8 @@ class TemplateInput extends Component {
             <div className={className}>
                 <Input
                     value={value}
-                    componentClass="textarea"
+                    componentClass={as}
                     rows={6}
-                    onChange={onChange.bind(this)}
                     onFocus={event => {this.handleFocus(true);onFocus(event)}}
                     onBlur={event => {this.handleFocus(false);onBlur(event)}}
                     {...props}
@@ -51,7 +50,7 @@ class TemplateInput extends Component {
 
 TemplateInput.defaultProps = {
     value: '',
-    onChange: () => {},
+    as: 'textarea',
     onBlur: () => {},
     onFocus: () => {}
 };
