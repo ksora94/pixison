@@ -49,7 +49,7 @@ class OptionTemplate extends Component {
                         )}
                     </Nav>
                 </div>
-                <Route exact path={'/template'} render={() => <Redirect to={'/template/detail'}/>} />
+                <Route exact path={'/template'} render={() => <Redirect to={`/template/detail?key=${functions[0].key}`}/>} />
                 <Route path={'/template/detail'} component={TemplateDetail}/>
             </div>
         )

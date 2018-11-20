@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Button, IconButton, Icon} from 'rsuite';
+import {Table, Button, IconButton, Icon, Radio} from 'rsuite';
 import classNames from 'classnames/bind';
 import style from './page.scss';
 import TemplateInput from 'components/TemplateInput';
@@ -8,6 +8,14 @@ const cx = classNames.bind(style);
 
 const IndexCell = function ({rowData, dataKey, ...props}) {
     return <Table.Cell {...props}>{rowData[dataKey] + 1}</Table.Cell>
+};
+
+const RadioCell = function ({rowData, dataKey, onChange, checked, ...props}) {
+    return (
+        <Table.Cell {...props} style={{padding: '4px 0'}}>
+            <Radio name={'expressionDefault'} value={rowData[dataKey]} checked={checked}/>
+        </Table.Cell>
+    )
 };
 
 const ExpressionCell = function ({ rowData, dataKey, editIndex, value, onChange, ...props }) {
@@ -70,6 +78,7 @@ class Expressions extends Component {
     handleAddClick() {
         const newValue = [...this.props.value];
 
+        if (this.state.editIndex >=0 ) return;
         newValue.push('');
         this.props.onChange(newValue);
         this.setState({
@@ -96,14 +105,13 @@ class Expressions extends Component {
         return (
             <div className={'page_expressions'}>
                 <Table
-                    showHeader={false}
                     data={value}
                     height={value.length ? 200 : 0}
                     autoHeight={true}
                 >
                     <Table.Column width={70} fixed>
-                        <Table.HeaderCell>序号</Table.HeaderCell>
-                        <IndexCell dataKey={'index'} />
+                        <Table.HeaderCell>默认</Table.HeaderCell>
+                        <RadioCell dataKey={'value'} />
                     </Table.Column>
                     <Table.Column flexGrow={1}>
                         <Table.HeaderCell>表达式</Table.HeaderCell>

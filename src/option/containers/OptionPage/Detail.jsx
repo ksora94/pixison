@@ -12,6 +12,13 @@ const mapStateToProps = ({page}) => ({
     pages: page.pages
 });
 
+const mapDispatchToProps = {
+    deletePage: (url) => ({
+        type: 'DELETE_PAGE',
+        data: url
+    })
+};
+
 
 class Detail extends Component {
     constructor(props) {
@@ -29,6 +36,10 @@ class Detail extends Component {
         };
     }
 
+    componentDidMount() {
+        this.updateData(this.props);
+    }
+
     componentWillReceiveProps(nextProps) {
         this.updateData(nextProps);
     }
@@ -36,9 +47,10 @@ class Detail extends Component {
     updateData(props) {
         const {url} = qs.parse(props.location.search.slice(1));
         const item = props.pages.find(f => f.url === url);
-        const {name, target, expressions} = item;
 
         if (item && url !== this.state.url) {
+            const {name, target, expressions} = item;
+
             this.setState({
                 url,
                 disabled: item.system,
@@ -49,19 +61,28 @@ class Detail extends Component {
         }
     }
 
+    handleDeletePage() {
+        this.props.deletePage(this.state.url);
+        this.props.history.replace('/page');
+    }
+
     render() {
         const {url, disabled, formValue} = this.state;
+        const {history} = this.props;
 
         return (
             <div className={cx('main')}>
-                <Header disabled={disabled}>
+                <Header
+                    disabled={disabled}
+                    onDelete={this.handleDeletePage.bind(this)}
+                >
                     {url}
                 </Header>
                 <div className={cx('body')}>
                     <PageForm
                         mode={'detail'}
                         value={formValue}
-                        disabled={disabled}
+                        disabled
                         onChange={formValue => this.setState({formValue})}
                     />
                 </div>
@@ -70,4 +91,4 @@ class Detail extends Component {
     }
 }
 
-export default connect(mapStateToProps)(Detail);
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);

@@ -1,7 +1,9 @@
 .form{
-    :global{
-        .rs-form-control-wrapper{
-            width: 100%;
+    &Control{
+        :global{
+            .rs-form-control-wrapper{
+                width: 100%;
+            }
         }
     }
 }

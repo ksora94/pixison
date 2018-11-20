@@ -6,13 +6,22 @@ const initialState = {
 
 const reducer = {
     ADD_PAGE(state, action) {
-        state.pages.push(action.data);
+        state.pages = [...state.pages, action.data];
+
+        storage.set('PAGES', state.pages);
+        return {...state}
     },
     MODIFY_PAGE(state, action) {
 
     },
-    DELETE_PAGE() {
+    DELETE_PAGE(state, action) {
+        const index = state.pages.findIndex(page => page.url === action.data);
 
+        state.pages.splice(index, 1);
+        state.pages = [...state.pages];
+        storage.set('PAGES', state.pages);
+
+        return {...state}
     }
 };
 

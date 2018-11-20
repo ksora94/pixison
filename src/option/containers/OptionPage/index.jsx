@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import style from './page.scss';
 import {Redirect, Route} from "react-router-dom";
 import PageDetail from "./Detail";
+import PageAdd from './Add';
 
 const cx = classNames.bind(style);
 
@@ -18,25 +19,18 @@ class OptionPage extends Component {
         super(props);
 
         this.state = {
-            selected: props.pages[0].url
+            selected: qs.parse(props.location.search.slice(1)).url
         }
     }
 
-    componentDidMount() {
-        this.changeSelected(this.props.pages[0].url);
-    }
-
-    changeSelected(url) {
-        const {history} = this.props;
-
-        history.replace(`/page/detail?${qs.stringify({url})}`);
+    componentWillReceiveProps(props) {
         this.setState({
-            selected: url
+            selected: qs.parse(props.location.search.slice(1)).url
         })
     }
 
     render() {
-        const {pages} = this.props;
+        const {pages, history} = this.props;
         const {selected} = this.state;
 
         return (
@@ -46,12 +40,12 @@ class OptionPage extends Component {
                         <IconButton
                             appearance={'subtle'}
                             icon={<Icon icon={'plus-circle'}/>}
-                            onClick={() => {}}
+                            onClick={() => history.replace('/page/add')}
                         >添加</IconButton>
                     </div>
                     <Nav
                         activeKey={selected}
-                        onSelect={this.changeSelected.bind(this)}
+                        onSelect={url =>  history.replace(`/page/detail?${qs.stringify({url})}`)}
                         vertical
                     >
                         {pages.map((item) =>
@@ -61,8 +55,11 @@ class OptionPage extends Component {
                         )}
                     </Nav>
                 </div>
-                <Route exact path={'/page'} render={() => <Redirect to={'/page/detail'}/>} />
+                <Route exact path={'/page'}
+                       render={() => <Redirect to={`/page/detail?${qs.stringify({url: pages[0].url})}`}/>}
+                />
                 <Route path={'/page/detail'} component={PageDetail}/>
+                <Route path={'/page/add'} component={PageAdd}/>
             </div>
         )
     }

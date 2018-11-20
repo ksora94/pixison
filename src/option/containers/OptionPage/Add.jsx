@@ -1,21 +1,74 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
+import {Button} from 'rsuite';
+import qs from "qs";
+
 import style from './page.scss';
+import Header from "~/components/Header";
+import PageForm from "~/components/PageForm";
 
 const cx = classNames.bind(style);
 
+const mapDispatchToProps = {
+    addPage: (page) => ({
+        type: 'ADD_PAGE',
+        data: page
+    })
+};
+
+const mapStateToProps = ({page}) => ({
+    pages: page.pages
+});
+
 class Add extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+        this.state = {
+            formValue: {
+                name: '',
+                url: '',
+                target: '',
+                expressions: []
+            }
+        }
+    }
+
+    submit() {
+        const {formValue} = this.state;
+
+        if(this.form.root.check()) {
+            this.props.addPage(formValue);
+            this.props.history.replace(`/page/detail?${qs.stringify({url: formValue.url})}`);
+        }
     }
 
     render() {
-        return (
-            <div>
+        const {formValue} = this.state;
 
+        return (
+            <div className={cx('main')}>
+                <Header disabled>
+                    添加页面
+                </Header>
+                <div className={cx('body')}>
+                    <PageForm
+                        ref={ref => (this.form = ref)}
+                        mode={'add'}
+                        value={formValue}
+                        onChange={formValue => this.setState({formValue})}
+                    />
+                    <Button
+                        appearance={'primary'}
+                        size={'md'}
+                        style={{marginTop:'40px'}}
+                        onClick={this.submit.bind(this)}
+                    >创建</Button>
+                </div>
             </div>
         )
     }
 }
 
-export default Add;
+export default connect(mapStateToProps, mapDispatchToProps)(Add);
