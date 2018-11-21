@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import {Form, FormGroup, FormControl, ControlLabel, Schema} from 'rsuite';
 import classNames from 'classnames/bind';
 
@@ -7,13 +8,14 @@ import TemplateInput from 'components/TemplateInput';
 import Expressions from './Expressions';
 
 const cx = classNames.bind(style);
-const {StringType, ArrayType} = Schema.Types;
+const {StringType, ObjectType} = Schema.Types;
 
 const model = Schema.Model({
     name: StringType().isRequired('名称为必填项'),
     url: StringType().isRequired('URL为必填项'),
     target: StringType().isRequired('目标文件夹为必填项'),
-    expressions: ArrayType().isRequired('至少填写一条表达式')
+    expressions: ObjectType()
+        .addRule(value => !!value.expressions.length, '至少填写一条表达式')
 });
 
 const FormControlWithMessage = function ({name, error, ...props}) {
@@ -31,17 +33,34 @@ class PageForm extends Component {
         };
     }
 
+    handleChange(value) {
+        this.props.onChange({
+            ...value,
+            default: value.expressions.default,
+            expressions: value.expressions.expressions
+        })
+    }
+
+
     render() {
         const {error} = this.state;
-        const {value, disabled, mode, ...props} = this.props;
+        const {value, disabled, mode, onChange, ...props} = this.props;
+        const formValue = {
+            ...value,
+            expressions: {
+                default: value.default,
+                expressions: value.expressions
+            }
+        };
 
         return (
             <Form
                 ref={ref => (this.root = ref)}
                 className={cx('form')}
-                formValue={value}
+                formValue={formValue}
                 model={model}
                 onCheck={error => this.setState({error})}
+                onChange={this.handleChange.bind(this)}
                 {...props}
             >
                 <FormGroup>

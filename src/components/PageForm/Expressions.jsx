@@ -6,14 +6,17 @@ import TemplateInput from 'components/TemplateInput';
 
 const cx = classNames.bind(style);
 
-const IndexCell = function ({rowData, dataKey, ...props}) {
-    return <Table.Cell {...props}>{rowData[dataKey] + 1}</Table.Cell>
-};
-
-const RadioCell = function ({rowData, dataKey, onChange, checked, ...props}) {
+const RadioCell = function ({rowData, dataKey, onChange, checkedValue, disabled, ...props}) {
     return (
         <Table.Cell {...props} style={{padding: '4px 0'}}>
-            <Radio name={'expressionDefault'} value={rowData[dataKey]} checked={checked}/>
+            {(!disabled || checkedValue===rowData[dataKey]) &&
+                <Radio
+                    onChange={onChange}
+                    name={'expressionDefault'}
+                    value={rowData[dataKey]}
+                    checked={checkedValue===rowData[dataKey]}
+                />
+            }
         </Table.Cell>
     )
 };
@@ -59,14 +62,18 @@ class Expressions extends Component {
         const {editIndex, editValue} = this.state;
 
         if (editIndex === index) {
-            const newValue = [...this.props.value];
+            const expressions = [...this.props.value.expressions];
+            const defaultExpression = this.props.value.default;
 
-            newValue[editIndex] = editValue;
+            expressions[editIndex] = editValue;
             this.setState({
                 editIndex: -1,
                 editValue: ''
             });
-            this.props.onChange(newValue);
+            this.props.onChange({
+                default: defaultExpression,
+                expressions
+            });
         } else {
             this.setState({
                 editIndex: index,
@@ -76,28 +83,41 @@ class Expressions extends Component {
     }
 
     handleAddClick() {
-        const newValue = [...this.props.value];
+        const expressions = [...this.props.value.expressions];
 
         if (this.state.editIndex >=0 ) return;
-        newValue.push('');
-        this.props.onChange(newValue);
+        expressions.push('');
+        this.props.onChange({
+            default: this.props.value.default,
+            expressions
+        });
         this.setState({
-            editIndex: newValue.length - 1,
+            editIndex: expressions.length - 1,
             editValue: ''
         });
     }
 
     handleDelClick({index}) {
-        const newValue = [...this.props.value];
+        const expressions = [...this.props.value.expressions];
 
-        newValue.splice(index, 1);
-        this.props.onChange(newValue);
+        expressions.splice(index, 1);
+        this.props.onChange({
+            default: this.props.value.default,
+            expressions
+        });
+    }
+
+    handleCheckDefault(value) {
+        this.props.onChange({
+            default: value,
+            expressions: this.props.value.expressions
+        })
     }
 
     render() {
         const {editIndex, editValue} = this.state;
-        const {disabled} = this.props;
-        const value = this.props.value.map((value, index) => ({
+        const {disabled, value} = this.props;
+        const expressions = value.expressions.map((value, index) => ({
             value,
             index
         }));
@@ -105,13 +125,18 @@ class Expressions extends Component {
         return (
             <div className={'page_expressions'}>
                 <Table
-                    data={value}
-                    height={value.length ? 200 : 0}
+                    data={expressions}
+                    height={expressions.length ? 200 : 0}
                     autoHeight={true}
                 >
                     <Table.Column width={70} fixed>
                         <Table.HeaderCell>默认</Table.HeaderCell>
-                        <RadioCell dataKey={'value'} />
+                        <RadioCell
+                            disabled={disabled}
+                            dataKey={'value'}
+                            checkedValue={value.default}
+                            onChange={this.handleCheckDefault.bind(this)}
+                        />
                     </Table.Column>
                     <Table.Column flexGrow={1}>
                         <Table.HeaderCell>表达式</Table.HeaderCell>
@@ -147,7 +172,10 @@ class Expressions extends Component {
 }
 
 Expressions.defaultProps = {
-    value: [],
+    value: {
+        default: null,
+        expressions: []
+    },
     disabled: false,
     onChange: () => {}
 };

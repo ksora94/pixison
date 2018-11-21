@@ -4,7 +4,7 @@ const cst = {
         url: '*',
         target: 'default',
         system: true,
-        default: '$Title',
+        default: '$Title()',
         expressions: ['$Title()', '$Title-$Date() $Time()']
     }]
 };

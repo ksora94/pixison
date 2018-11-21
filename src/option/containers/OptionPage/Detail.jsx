@@ -31,6 +31,7 @@ class Detail extends Component {
                 name: '',
                 url: '',
                 target: '',
+                default: null,
                 expressions: []
             }
         };
@@ -55,6 +56,7 @@ class Detail extends Component {
                 url,
                 disabled: item.system,
                 formValue: {
+                    default: item.default,
                     name, url, target, expressions
                 }
             })
