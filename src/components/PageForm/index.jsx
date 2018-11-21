@@ -16,6 +16,8 @@ const model = Schema.Model({
     target: StringType().isRequired('目标文件夹为必填项'),
     expressions: ObjectType()
         .addRule(value => !!value.expressions.length, '至少填写一条表达式')
+        .addRule(value => value.expressions.every(e => e), '存在空表达式')
+        .addRule(value => _.uniq(value.expressions).length === value.expressions.length, '存在同样的表达式')
 });
 
 const FormControlWithMessage = function ({name, error, ...props}) {
@@ -56,6 +58,7 @@ class PageForm extends Component {
         return (
             <Form
                 ref={ref => (this.root = ref)}
+                checkTrigger={'none'}
                 className={cx('form')}
                 formValue={formValue}
                 model={model}

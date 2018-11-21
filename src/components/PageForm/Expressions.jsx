@@ -84,11 +84,12 @@ class Expressions extends Component {
 
     handleAddClick() {
         const expressions = [...this.props.value.expressions];
+        let defaultExpression = this.props.value.default;
 
-        if (this.state.editIndex >=0 ) return;
+        if (this.state.editIndex >= 0 ) return;
         expressions.push('');
         this.props.onChange({
-            default: this.props.value.default,
+            default: defaultExpression,
             expressions
         });
         this.setState({
@@ -123,7 +124,7 @@ class Expressions extends Component {
         }));
 
         return (
-            <div className={'page_expressions'}>
+            <div className={cx('expressions')}>
                 <Table
                     data={expressions}
                     height={expressions.length ? 200 : 0}
