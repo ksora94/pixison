@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
+
 import style from './setting.scss';
 import service from 'js/service';
+import Container from 'components/Container';
 
 const cx = classNames.bind(style);
 
@@ -24,7 +26,11 @@ class OptionSetting extends Component {
     }
 
     render() {
-        return (<div onClick={this.createFolder.bind(this)}>{this.props.token}</div>)
+        return (
+            <Container title={'全局设置'} disabled>
+                {this.props.token}
+            </Container>
+        )
     }
 }
 

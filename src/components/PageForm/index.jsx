@@ -13,7 +13,6 @@ const {StringType, ObjectType} = Schema.Types;
 const model = Schema.Model({
     name: StringType().isRequired('名称为必填项'),
     url: StringType().isRequired('URL为必填项'),
-    target: StringType().isRequired('目标文件夹为必填项'),
     expressions: ObjectType()
         .addRule(value => !!value.expressions.length, '至少填写一条表达式')
         .addRule(value => value.expressions.every(e => e), '存在空表达式')
@@ -77,7 +76,7 @@ class PageForm extends Component {
                     </FormGroup>
                 }
                 <FormGroup className={cx('formControl')}>
-                    <ControlLabel>目标文件夹 *</ControlLabel>
+                    <ControlLabel>目标文件夹</ControlLabel>
                     <FormControlWithMessage
                         accepter={TemplateInput}
                         name={'target'}

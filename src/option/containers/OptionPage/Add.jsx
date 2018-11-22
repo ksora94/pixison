@@ -5,8 +5,8 @@ import {Button} from 'rsuite';
 import qs from "qs";
 
 import style from './page.scss';
-import Header from "~/components/Header";
 import PageForm from "~/components/PageForm";
+import Container from 'components/Container';
 
 const cx = classNames.bind(style);
 
@@ -48,25 +48,20 @@ class Add extends Component {
         const {formValue} = this.state;
 
         return (
-            <div className={cx('main')}>
-                <Header disabled>
-                    添加页面
-                </Header>
-                <div className={cx('body')}>
-                    <PageForm
-                        ref={ref => (this.form = ref)}
-                        mode={'add'}
-                        value={formValue}
-                        onChange={formValue => this.setState({formValue})}
-                    />
-                    <Button
-                        appearance={'primary'}
-                        size={'md'}
-                        style={{marginTop:'40px'}}
-                        onClick={this.submit.bind(this)}
-                    >创建</Button>
-                </div>
-            </div>
+            <Container title={'添加页面'} disabled>
+                <PageForm
+                    ref={ref => (this.form = ref)}
+                    mode={'add'}
+                    value={formValue}
+                    onChange={formValue => this.setState({formValue})}
+                />
+                <Button
+                    appearance={'primary'}
+                    size={'md'}
+                    style={{marginTop:'40px'}}
+                    onClick={this.submit.bind(this)}
+                >创建</Button>
+            </Container>
         )
     }
 }

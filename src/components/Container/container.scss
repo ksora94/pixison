@@ -1,0 +1,20 @@
+@import "css/colors.scss";
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+
+}
+
+.head{
+    &-shadow {
+        border-bottom: 1px solid $grey-normal;
+    }
+}
+
+.body {
+    overflow: auto;
+    padding-right: 36px;
+}

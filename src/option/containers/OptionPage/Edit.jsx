@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
-import qs from 'qs';
+import {Button} from "rsuite";
 import classNames from 'classnames/bind';
 
 import style from './page.scss';
 import Container from 'components/Container';
 import PageForm from 'components/PageForm';
+import connect from "react-redux/es/connect/connect";
+import qs from "qs";
 
 const cx = classNames.bind(style);
 
@@ -14,20 +15,18 @@ const mapStateToProps = ({page}) => ({
 });
 
 const mapDispatchToProps = {
-    deletePage: (url) => ({
-        type: 'DELETE_PAGE',
-        data: url
+    modifyPage: (page) => ({
+        type: 'MODIFY_PAGE',
+        data: page
     })
 };
 
-
-class Detail extends Component {
+class Edit extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             url: '',
-            disabled: false,
             formValue: {
                 name: '',
                 url: '',
@@ -45,6 +44,7 @@ class Detail extends Component {
     componentWillReceiveProps(nextProps) {
         this.updateData(nextProps);
     }
+
 
     updateData(props) {
         const {url} = qs.parse(props.location.search.slice(1));
@@ -64,30 +64,36 @@ class Detail extends Component {
         }
     }
 
-    handleDeletePage() {
-        this.props.deletePage(this.state.url);
-        this.props.history.replace('/page');
+    submit() {
+        const {formValue} = this.state;
+
+        if(this.form.root.check()) {
+            this.props.modifyPage(formValue);
+            this.props.history.replace(`/page/detail?${qs.stringify({url: formValue.url})}`);
+        }
     }
 
+
     render() {
-        const {url, disabled, formValue} = this.state;
-        const {history} = this.props;
+        const {url, formValue} = this.state;
 
         return (
-            <Container
-                title={url}
-                disabled={disabled}
-                onDelete={this.handleDeletePage.bind(this)}
-                onEdit={() => history.replace(`/page/edit?${qs.stringify({url})}`)}
-            >
+            <Container title={url} disabled>
                 <PageForm
-                    mode={'detail'}
+                    ref={ref => (this.form = ref)}
+                    mode={'edit'}
                     value={formValue}
-                    disabled
+                    onChange={formValue => this.setState({formValue})}
                 />
+                <Button
+                    appearance={'primary'}
+                    size={'md'}
+                    style={{marginTop:'40px'}}
+                    onClick={this.submit.bind(this)}
+                >修改</Button>
             </Container>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Detail);
+export default connect(mapStateToProps, mapDispatchToProps)(Edit);

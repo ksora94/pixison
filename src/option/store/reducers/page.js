@@ -9,10 +9,17 @@ const reducer = {
         state.pages = [...state.pages, action.data];
 
         storage.set('PAGES', state.pages);
+
         return {...state}
     },
     MODIFY_PAGE(state, action) {
+        const index = state.pages.findIndex(page => page.url === action.data.url);
 
+        state.pages[index] = action.data;
+        state.pages = [...state.pages];
+        storage.set('PAGES', state.pages);
+
+        return {...state}
     },
     DELETE_PAGE(state, action) {
         const index = state.pages.findIndex(page => page.url === action.data);

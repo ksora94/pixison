@@ -27,11 +27,11 @@ class Header extends Component {
     }
 
     render() {
-        const {children, onEdit, disabled, confirmText} = this.props;
+        const {children, onEdit, className, disabled, confirmText, ...props} = this.props;
         const {showDelModal} = this.state;
 
         return (
-            <div className={cx('con')}>
+            <div className={cx('con', className)}>
                 <span className={cx('title')}>{children}</span>
                 {!disabled &&
                     <div>

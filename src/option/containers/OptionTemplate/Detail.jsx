@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import qs from 'qs';
 import classNames from 'classnames/bind';
+
 import style from './template.scss';
 import {functionsArray} from 'js/functions';
-import Header from 'components/Header'
+import Container from 'components/Container';
 import TemplateInput from 'components/TemplateInput';
 
 const cx = classNames.bind(style);
@@ -46,17 +47,12 @@ class Detail extends Component {
         const {name, expression} = this.state;
 
         return (
-            <div className={cx('main')}>
-                <Header disabled>
-                    {name}
-                </Header>
-                <div className={cx('body')}>
-                    <TemplateInput
-                        value={expression}
-                        onChange={this.handleChange.bind(this)}
-                    />
-                </div>
-            </div>
+            <Container title={name} disabled>
+                <TemplateInput
+                    value={expression}
+                    onChange={this.handleChange.bind(this)}
+                />
+            </Container>
         )
     }
 }

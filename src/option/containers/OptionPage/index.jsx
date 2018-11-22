@@ -7,6 +7,7 @@ import style from './page.scss';
 import {Redirect, Route} from "react-router-dom";
 import PageDetail from "./Detail";
 import PageAdd from './Add';
+import PageEdit from './Edit';
 
 const cx = classNames.bind(style);
 
@@ -50,7 +51,7 @@ class OptionPage extends Component {
                     >
                         {pages.map((item) =>
                             <Nav.Item key={item.url} eventKey={item.url}>
-                                {item.url} <span className={cx('itemName')}>{item.name}</span>
+                                {item.name}
                             </Nav.Item>
                         )}
                     </Nav>
@@ -60,6 +61,7 @@ class OptionPage extends Component {
                 />
                 <Route path={'/page/detail'} component={PageDetail}/>
                 <Route path={'/page/add'} component={PageAdd}/>
+                <Route path={'/page/edit'} component={PageEdit}/>
             </div>
         )
     }
