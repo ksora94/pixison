@@ -6,8 +6,7 @@ import classNames from 'classnames/bind';
 import style from './authority.scss';
 import store from 'panel/store';
 import event from 'js/event';
-import {getToken} from 'js/service';
-import service from "~/js/service";
+import service, {getToken} from 'js/service';
 import storage from "~/js/storage";
 
 const cx = classNames.bind(style);
@@ -30,18 +29,17 @@ class Authority extends Component {
     }
 
     componentDidMount() {
-        Promise.all([this.getToken(), this.initRootFolder()])
-            .then(token => {
+
+        this.getToken()
+            .then(() => this.initRootFolder())
+            .then(() => {
                 chrome.runtime.sendMessage({
                     type: 'PANEL:authorized',
-                    data: token
+                    data: this.props.token
                 });
-                this.setState({
-                    status: 'GET_DATA_URL:start'
-                });
-
                 return this.getDataUrl();
-            }).then(() => this.props.history.replace('/processing'))
+            })
+            .then(() => this.props.history.replace('/processing'))
             .catch(e => {
                 this.setState({
                     status: e
@@ -79,8 +77,9 @@ class Authority extends Component {
                     throw new Error('INIT_ROOT_FOLDER:fail');
                 }
             })
+        } else {
+            return this.createRootFolder();
         }
-        return this.createRootFolder();
     }
 
     createRootFolder() {
@@ -98,6 +97,9 @@ class Authority extends Component {
     }
 
     getDataUrl() {
+        this.setState({
+            status: 'GET_DATA_URL:start'
+        });
         return new Promise(resolve => {
             event.add('CONTENT:image_parsed', data => {
                 store.dispatch({
@@ -105,9 +107,14 @@ class Authority extends Component {
                     data: data.dataUrl
                 });
                 store.dispatch({
-                    type: 'SET_NAME',
-                    data: data.name
+                    type: 'SET_NAMES',
+                    data: data.names
                 });
+                store.dispatch({
+                    type: 'SET_TARGETS',
+                    data: data.targets
+                });
+                console.log(data.names);
                 resolve(data);
             });
         })

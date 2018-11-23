@@ -7,8 +7,10 @@ class Uploader extends Component {
     }
 
     render() {
+        const {token, data, onSuccess, ...props} = this.props;
+
         return(
-            <button onClick={this.upload.bind(this)}>{this.props.children}</button>
+            <div onClick={this.upload.bind(this)} {...props}>{this.props.children}</div>
         )
     }
 

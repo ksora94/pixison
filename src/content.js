@@ -17,12 +17,13 @@ function getDataUrl(url, callback) {
 
 chrome.runtime.onMessage.addListener(({type, data}) => {
     if (type === 'BACKGROUND:image_parse_begin') {
-        getDataUrl(data, dataUrl => {
+        getDataUrl(data.imgUrl, dataUrl => {
             chrome.runtime.sendMessage({
                 type: 'CONTENT:image_parsed',
                 data: {
                     dataUrl,
-                    name: parser('$CSS(figcaption > div > div > h1)')
+                    names: data.expressions.map(parser),
+                    targets: data.targets.map(parser)
                 }
             });
         });

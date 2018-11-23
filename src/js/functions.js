@@ -44,10 +44,10 @@ export const functions = {
         parser(selector) {
             const node = document.querySelector(selector);
 
-            return node ? node.innerText.replace(/\n/g, '') : '';
+            return node ? node.innerText.replace(/[\n$()]/g, '') : '';
         },
         previewer(selector) {
-            return `CSS (${selector.length > 8 ? selector.slice(0, 8) + '...' : selector})`
+            return `CSS {${selector.length > 8 ? selector.slice(0, 8) + '...' : selector}`
         }
     },
     'Slice': {
@@ -71,13 +71,13 @@ for (let key in functions) {
 export const compiler = function (expression, handler, errorHandler) {
     let result = expression;
     const func = Object.keys(functions).map(f => '\\$' + f);
-    const regExp = new RegExp(`(${func.join('|')})\\([^\(\)]*\\)`, 'g');
+    const regExp = new RegExp(`(${func.join('|')})\\{[^\{\}]*\\}`, 'g');
     const error = errorHandler ||
         (funcName => console.error(`Error in func: ${funcName}`));
 
     if (!regExp.test(expression)) return result;
     result = expression.replace(regExp, str => {
-        const argsBeginAt = str.indexOf('(');
+        const argsBeginAt = str.indexOf('{');
         const funcName = str.slice(1, argsBeginAt);
         const args = str.slice(argsBeginAt + 1, -1).split(',').map(a => a.trim());
 

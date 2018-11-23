@@ -34,7 +34,7 @@ class Detail extends Component {
         if (item) {
             this.setState({
                 name: item.name,
-                expression: `$${key}()`
+                expression: `$${key}{}`
             })
         }
     }

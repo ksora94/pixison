@@ -18,7 +18,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = ({page}) => ({
-    pages: page.pages
+    urls: page.pages.map(({url}) => url)
 });
 
 class Add extends Component {
@@ -53,6 +53,7 @@ class Add extends Component {
                     ref={ref => (this.form = ref)}
                     mode={'add'}
                     value={formValue}
+                    urls={this.props.urls}
                     onChange={formValue => this.setState({formValue})}
                 />
                 <Button

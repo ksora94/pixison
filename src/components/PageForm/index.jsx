@@ -10,15 +10,6 @@ import Expressions from './Expressions';
 const cx = classNames.bind(style);
 const {StringType, ObjectType} = Schema.Types;
 
-const model = Schema.Model({
-    name: StringType().isRequired('名称为必填项'),
-    url: StringType().isRequired('URL为必填项'),
-    expressions: ObjectType()
-        .addRule(value => !!value.expressions.length, '至少填写一条表达式')
-        .addRule(value => value.expressions.every(e => e), '存在空表达式')
-        .addRule(value => _.uniq(value.expressions).length === value.expressions.length, '存在同样的表达式')
-});
-
 const FormControlWithMessage = function ({name, error, ...props}) {
     return (
         <FormControl name={name} errorMessage={error[name]} errorPlacement={'bottomRight'} {...props}/>
@@ -32,6 +23,17 @@ class PageForm extends Component {
         this.state = {
             error: {}
         };
+        this.model = Schema.Model({
+            name: StringType()
+                .isRequired('名称为必填项'),
+            url: StringType()
+                .addRule(value => !props.urls.some(url => value === url), '已存在的URL')
+                .isRequired('URL为必填项'),
+            expressions: ObjectType()
+                .addRule(value => !!value.expressions.length, '至少填写一条表达式')
+                .addRule(value => value.expressions.every(e => e), '存在空表达式')
+                .addRule(value => _.uniq(value.expressions).length === value.expressions.length, '存在同样的表达式')
+        });
     }
 
     handleChange(value) {
@@ -41,7 +43,6 @@ class PageForm extends Component {
             expressions: value.expressions.expressions
         })
     }
-
 
     render() {
         const {error} = this.state;
@@ -60,7 +61,7 @@ class PageForm extends Component {
                 checkTrigger={'none'}
                 className={cx('form')}
                 formValue={formValue}
-                model={model}
+                model={this.model}
                 onCheck={error => this.setState({error})}
                 onChange={this.handleChange.bind(this)}
                 {...props}
@@ -101,7 +102,8 @@ class PageForm extends Component {
 PageForm.defaultProps = {
     disabled: false,
     mode: 'add',
-    value: {}
+    value: {},
+    urls: []
 };
 
 export default PageForm;
