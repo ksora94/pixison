@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 
 import Authority from 'panel/containers/Authority';
+import Form from 'panel/containers/Form';
 import Processing from 'panel/containers/Processing';
 
 class App extends Component{
@@ -9,6 +10,7 @@ class App extends Component{
         return (
             <div>
                 <Route exact path='/' component={Authority} />
+                <Route path='/form' component={Form}/>
                 <Route path='/processing' component={Processing}/>
             </div>
         )

@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener(({type, data}) => {
                 type: 'CONTENT:image_parsed',
                 data: {
                     dataUrl,
+                    pageUrl: location.href,
                     names: data.expressions.map(parser),
                     targets: data.targets.map(parser)
                 }

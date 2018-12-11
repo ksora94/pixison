@@ -37,9 +37,6 @@ html, body {
             flex: 1 0 auto;
             align-items: center;
             justify-content: center;
-            .rs-loader-spin::after {
-                border-color: $base transparent transparent;
-            }
         }
     }
 }

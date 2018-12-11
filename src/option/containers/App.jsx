@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Loader} from 'rsuite';
+import Loader from 'components/Loader';
 
 import SubMenu from './SubMenu';
 import OptionSetting from './OptionSetting';
@@ -86,10 +86,7 @@ class App extends Component {
                     </div>
                     :
                     <div className='option-main_load'>
-                        <Loader
-                            className={'loading'}
-                            size={'md'}
-                        />
+                        <Loader/>
                     </div>
                 }
             </div>

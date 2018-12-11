@@ -1,0 +1,13 @@
+@import "css/colors.scss";
+
+.con{
+    :global {
+        .rs-loader-spin::after {
+            border-color: $base transparent transparent;
+        }
+    }
+}
+
+.text{
+    font-size: 12px;
+}

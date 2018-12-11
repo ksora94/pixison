@@ -1,18 +1,6 @@
 @import "css/colors.scss";
 
 .con{
+    padding-top: 36px;
     text-align: center;
-}
-
-.loading{
-    margin-top: 36px;
-    :global {
-        .rs-loader-spin::after {
-            border-color: $base transparent transparent;
-        }
-    }
-}
-
-.text{
-    font-size: 12px;
 }

@@ -4,6 +4,7 @@ import storage from "js/storage";
 const initialState = {
     token: null,
     dataUrl: '',
+    pageUrl: '',
     names: [],
     targets: [],
     rootFolder: storage.get('ROOT_FOLDER') || {},
@@ -14,8 +15,9 @@ const reducer = {
         state.token = action.data;
         return {...state};
     },
-    SET_DATA_URL: function (state, action) {
-        state.dataUrl = action.data;
+    SET_URL: function (state, action) {
+        state.dataUrl = action.data.dataUrl;
+        state.pageUrl = action.data.pageUrl;
         return {...state};
     },
     SET_NAMES: function (state, action) {

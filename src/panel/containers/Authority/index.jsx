@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Loader} from 'rsuite';
+import Loader from 'components/Loader';
 
 import classNames from 'classnames/bind';
 import style from './authority.scss';
@@ -29,7 +29,6 @@ class Authority extends Component {
     }
 
     componentDidMount() {
-
         this.getToken()
             .then(() => this.initRootFolder())
             .then(() => {
@@ -39,7 +38,7 @@ class Authority extends Component {
                 });
                 return this.getDataUrl();
             })
-            .then(() => this.props.history.replace('/processing'))
+            .then(() => this.props.history.replace('/form'))
             .catch(e => {
                 this.setState({
                     status: e
@@ -103,8 +102,11 @@ class Authority extends Component {
         return new Promise(resolve => {
             event.add('CONTENT:image_parsed', data => {
                 store.dispatch({
-                    type: 'SET_DATA_URL',
-                    data: data.dataUrl
+                    type: 'SET_URL',
+                    data: {
+                        dataUrl: data.dataUrl,
+                        pageUrl: data.pageUrl
+                    }
                 });
                 store.dispatch({
                     type: 'SET_NAMES',
@@ -114,7 +116,6 @@ class Authority extends Component {
                     type: 'SET_TARGETS',
                     data: data.targets
                 });
-                console.log(data.names);
                 resolve(data);
             });
         })
@@ -125,11 +126,7 @@ class Authority extends Component {
 
         return (
             <div className={cx('container', 'con')}>
-                <Loader
-                    content={<span className={cx('text')}>{STATUS_MAP[status]}</span>}
-                    className={cx('loading')}
-                    size={'md'}
-                />
+                <Loader>{STATUS_MAP[status]}</Loader>
             </div>
         )
     }
