@@ -9,7 +9,6 @@ import OptionPage from './OptionPage';
 import OptionTemplate from './OptionTemplate';
 import service, {getToken} from 'js/service';
 import storage from 'js/storage';
-import 'js/gapi';
 
 const mapStateToProps = ({global}) => ({
    token: global.token,

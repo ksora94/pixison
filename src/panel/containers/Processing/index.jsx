@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {IconButton, Icon, Input, InputGroup} from 'rsuite';
+import {IconButton, Icon, Input} from 'rsuite';
 import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
 
 import style from './processing.scss';
-import Uploader from 'components/Uploader'
+import service from 'js/service';
 
 const cx = classNames.bind(style);
 
@@ -62,6 +62,23 @@ class Processing extends Component {
         this.toggleSelect('');
     }
 
+    submit() {
+        const {name, target} = this.state;
+        const {dataUrl, token} = this.props;
+
+        service('uploadImage', token, {
+            name,
+            description: 'abc',
+            parent,
+            dataUrl
+        })
+    }
+
+    stopPropagation(e){
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+    }
+
     render() {
         const {name, target, showSelect, selectOptions} = this.state;
         const {dataUrl, token} = this.props;
@@ -77,11 +94,11 @@ class Processing extends Component {
                     <img src={dataUrl}/>
                 </div>
                 <div className={cx('body')}>
-                    <div className={cx('main')}>
-                        <Uploader className={cx('uploader')} token={token} data={data}>
+                    <div className={cx('main')} onClick={() => this.toggleSelect('')}>
+                        <div className={cx('uploader')} onClick={e => {this.stopPropagation(e);this.submit()}}>
                             <IconButton appearance={'primary'} size={'lg'} icon={<Icon icon="check"/>} circle/>
-                        </Uploader>
-                        <div className={cx('info')}>
+                        </div>
+                        <div className={cx('info')} onClick={this.stopPropagation}>
                             {showSelect !== 'target' &&
                                 <div className={cx('input')}>
                                     <Icon icon="image"/>

@@ -3,7 +3,6 @@ import {Route} from 'react-router-dom';
 
 import Authority from 'panel/containers/Authority';
 import Processing from 'panel/containers/Processing';
-import 'js/gapi'
 
 class App extends Component{
     render() {
