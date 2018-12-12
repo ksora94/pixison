@@ -4,8 +4,6 @@ import {Icon, Button} from 'rsuite';
 import classNames from 'classnames/bind';
 import style from './success.scss';
 
-import service from 'js/service';
-
 const cx = classNames.bind(style);
 
 class Success extends Component {
