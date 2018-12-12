@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import Authority from 'panel/containers/Authority';
 import Form from 'panel/containers/Form';
 import Processing from 'panel/containers/Processing';
+import Success from 'panel/containers/Success';
 
 class App extends Component{
     render() {
@@ -12,6 +13,7 @@ class App extends Component{
                 <Route exact path='/' component={Authority} />
                 <Route path='/form' component={Form}/>
                 <Route path='/processing' component={Processing}/>
+                <Route path='/success' component={Success}/>
             </div>
         )
     }

@@ -13,8 +13,8 @@ const STATUS_MAP = {
     'CHECK_TARGET:fail': '检查目标文件夹失败',
     'CREATE_TARGET:start': '创建目标文件夹',
     'CREATE_TARGET:fail': '创建目标文件夹失败',
-    'UPLOAD_IMAGE:start': '上传图片',
-    'UPLOAD_IMAGE:fail': '上传图片失败'
+    'UPLOAD_IMAGE:start': '添加图片',
+    'UPLOAD_IMAGE:fail': '添加图片失败'
 };
 
 class Processing extends Component {
@@ -27,8 +27,8 @@ class Processing extends Component {
     }
 
     componentDidMount() {
-        const {token, dataUrl, pageUrl, rootFolder} = this.props;
-        const {target, name} = this.props.history.location.state;
+        const {token, dataUrl, pageUrl, rootFolder, history} = this.props;
+        const {target, name} = history.location.state;
 
         if (!token) {
             history.replace('/');
@@ -51,8 +51,12 @@ class Processing extends Component {
             return service('uploadImage', token, {
                 description: pageUrl,
                 name, parentId, dataUrl
-            }).then(() => {
             })
+        }).then(data => {
+            history.replace({
+                pathname: '/success',
+                state: data
+            });
         }).catch(({name}) => {
             let status;
 

@@ -49,7 +49,7 @@ class App extends Component {
             });
 
             if (rootFolder.id) {
-                service('getFileDetail', token, {
+                service('getFile', token, {
                     id: rootFolder.id
                 }).catch(res => {
                     if (res.code = '404') {

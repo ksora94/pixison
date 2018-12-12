@@ -67,7 +67,7 @@ class Authority extends Component {
             status: 'INIT_ROOT_FOLDER:start'
         });
         if (rootFolder.id) {
-            return service('getFileDetail', token, {
+            return service('getFile', token, {
                 id: rootFolder.id
             }).catch(res => {
                 if (res.code = '404') {

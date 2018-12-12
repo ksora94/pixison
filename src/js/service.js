@@ -38,7 +38,7 @@ const s = {
             title
         }
     }),
-    getFileDetail: ({id}) => ({
+    getFile: ({id}) => ({
         path: `/drive/v3/files/${id}`,
         method: 'GET'
     }),
