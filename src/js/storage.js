@@ -27,6 +27,7 @@ function set(key, data) {
 function init() {
     if (!get('PAGES')) {
         set('PAGES', cst.DEFAULT_PAGES);
+        set('SETTING', cst.DEFAULT_SETTING);
     }
 }
 

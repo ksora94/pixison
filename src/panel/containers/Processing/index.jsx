@@ -27,20 +27,20 @@ class Processing extends Component {
     }
 
     componentDidMount() {
-        const {token, dataUrl, pageUrl, rootFolder, history} = this.props;
+        const {dataUrl, pageUrl, rootFolder, history} = this.props;
         const {target, name} = history.location.state;
 
-        if (!token) {
+        if (!dataUrl) {
             history.replace('/');
             return;
         }
-        service('getFileDetailByName', token, {
+        service('getFileDetailByName', {
             folderId: rootFolder.id,
             name: target
         }).then( data => {
             if (!data.files.length) {
                 this.changeStatus('CREATE_TARGET:start');
-                return service('createFolder', token, {
+                return service('createFolder', {
                     title: target,
                     parentId: rootFolder.id
                 }).then(data => data.id);
@@ -48,7 +48,7 @@ class Processing extends Component {
             return data.files[0].id;
         }).then( parentId => {
             this.changeStatus('UPLOAD_IMAGE:start');
-            return service('uploadImage', token, {
+            return service('uploadImage', {
                 description: pageUrl,
                 name, parentId, dataUrl
             })
@@ -93,7 +93,6 @@ class Processing extends Component {
 
 export default connect(
     state => ({
-        token: state.token,
         dataUrl: state.dataUrl,
         pageUrl: state.pageUrl,
         rootFolder: state.rootFolder

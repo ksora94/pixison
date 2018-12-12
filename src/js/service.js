@@ -1,30 +1,46 @@
-function service (name, token, data) {
-    const {
-        path,
-        method,
-        contentType = 'application/json',
-        options,
-        body
-    } = typeof(s[name]) === 'function' ? s[name](data, token) : s[name];
-
+export function getToken() {
     return new Promise((resolve, reject) => {
-        gapi.load('client', () => gapi.client.request({
-            path,
-            method,
-            headers: {
-                'Content-Type': contentType,
-                Authorization: 'Bearer ' + token,
-            },
-            body,
-            ...options
-        }).execute(res => {
-            if (res.error) {
-                console.error(res.error.message);
-                reject({...res, name, path})
+        chrome.identity.getAuthToken({
+            interactive: true
+        }, (token) => {
+            if (token) {
+                resolve(token)
             } else {
-                resolve(res);
+                reject(token, 'getToken');
             }
-        }));
+        })
+    });
+}
+
+function service (name, data) {
+    return new Promise((resolve, reject) => {
+        getToken().then(token => {
+            const {
+                path,
+                method,
+                contentType = 'application/json',
+                options,
+                body
+            } = typeof(s[name]) === 'function' ? s[name](data, token) : s[name];
+
+            gapi.load('client', () => gapi.client.request({
+                path,
+                method,
+                headers: {
+                    'Content-Type': contentType,
+                    Authorization: 'Bearer ' + token,
+                },
+                body,
+                ...options
+            }).execute(res => {
+                if (res.error) {
+                    console.error(res.error.message);
+                    reject({...res, name, path})
+                } else {
+                    resolve(res);
+                }
+            }));
+        }, reject);
     })
 }
 
@@ -47,7 +63,7 @@ const s = {
         method: 'GET'
     }),
     getFileDetailByName: ({folderId, name}) => ({
-        path: `/drive/v3/files?q=name+=+'${name}'${folderId && `+and+'${folderId}'+in+parents`}`,
+        path: `/drive/v3/files?q=name+=+'${name}'${folderId ? `+and+'${folderId}'+in+parents` : ''}`,
         method: 'GET'
     }),
     uploadImage: ({name, description, parentId, dataUrl}, token) => {
@@ -81,21 +97,6 @@ const s = {
         }
     }
 };
-
-
-export function getToken() {
-    return new Promise((resolve, reject) => {
-        chrome.identity.getAuthToken({
-            interactive: true
-        }, (token) => {
-            if (token) {
-                resolve(token)
-            } else {
-                reject();
-            }
-        })
-    });
-}
 
 export default service;
 

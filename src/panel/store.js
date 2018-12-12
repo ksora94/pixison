@@ -2,19 +2,15 @@ import {createStore} from 'redux';
 import storage from "js/storage";
 
 const initialState = {
-    token: null,
     dataUrl: '',
     pageUrl: '',
     names: [],
     targets: [],
     rootFolder: storage.get('ROOT_FOLDER') || {},
+    setting: storage.get('SETTING') || {}
 };
 
 const reducer = {
-    SET_TOKEN: function (state, action) {
-        state.token = action.data;
-        return {...state};
-    },
     SET_URL: function (state, action) {
         state.dataUrl = action.data.dataUrl;
         state.pageUrl = action.data.pageUrl;

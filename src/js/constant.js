@@ -6,7 +6,11 @@ const cst = {
         system: true,
         default: '$Title{}',
         expressions: ['$Title{}', '$Title{}-$Date{} $Time{}']
-    }]
+    }],
+    DEFAULT_SETTING: {
+        autoClose: false,
+        allowCustomTarget: false
+    }
 };
 
 export default cst;

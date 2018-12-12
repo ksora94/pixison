@@ -32,7 +32,7 @@ class SubMenu extends Component {
             icon: 'web',
             id: 'page'
         }, {
-            title: '模板管理',
+            title: '表达式管理',
             icon: 'book',
             id: 'template'
         }];

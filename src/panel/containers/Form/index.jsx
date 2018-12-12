@@ -20,9 +20,9 @@ class Form extends Component {
     }
 
     componentWillMount() {
-        const {token, history} = this.props;
+        const {history, dataUrl} = this.props;
 
-        if (!token) history.replace('/')
+        if (!dataUrl) history.replace('/')
     }
 
     toggleSelect(value) {
@@ -59,6 +59,12 @@ class Form extends Component {
             });
         }
         this.toggleSelect('');
+    }
+
+    handleChangeTarget(target) {
+        if (this.props.setting.allowCustomTarget) {
+            this.setState({target});
+        }
     }
 
     submit() {
@@ -116,6 +122,7 @@ class Form extends Component {
                                         size={'xs'}
                                         value={target}
                                         onFocus={() => this.updateSelectOptions('target')}
+                                        onChange={this.handleChangeTarget.bind(this)}
                                     />
                                 </div>
                             }
@@ -143,9 +150,9 @@ class Form extends Component {
 
 export default connect(
     state => ({
-        token: state.token,
         dataUrl: state.dataUrl,
         names: state.names,
-        targets: state.targets
+        targets: state.targets,
+        setting: state.setting
     })
 )(Form);

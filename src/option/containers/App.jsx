@@ -11,15 +11,10 @@ import service, {getToken} from 'js/service';
 import storage from 'js/storage';
 
 const mapStateToProps = ({global}) => ({
-   token: global.token,
-   rootFolder: global.rootFolder
+    rootFolder: global.rootFolder
 });
 
 const mapDispatchToProps = {
-    setToken: (token) => ({
-        type: 'SET_TOKEN',
-        data: token
-    }),
     setRootFolder: (id) => ({
         type: 'SET_ROOT_FOLDER',
         data: id
@@ -42,31 +37,31 @@ class App extends Component {
     componentDidMount() {
         const {rootFolder} = this.props;
 
-        getToken().then(token => {
-            this.props.setToken(token);
-            this.setState({
-                loaded: true
-            });
-
-            if (rootFolder.id) {
-                service('getFile', token, {
-                    id: rootFolder.id
-                }).catch(res => {
-                    if (res.code = '404') {
-                        this.createRootFolder();
-                    }
+        if (rootFolder.id) {
+            service('getFile', {
+                id: rootFolder.id
+            }).then(
+                () => this.setState({
+                    loaded: true
                 })
-            } else {
-                this.createRootFolder();
-            }
-        })
+            ).catch(res => {
+                if (res.code === '404') {
+                    this.createRootFolder();
+                }
+            })
+        } else {
+            this.createRootFolder();
+        }
     }
 
     createRootFolder() {
-        service('createFolder', this.props.token, {
+        service('createFolder', {
             title: 'Pixison'
         }).then(res => {
             this.props.setRootFolder(res);
+            this.setState({
+                loaded: true
+            });
             storage.set('ROOT_FOLDER', res);
         })
     }
@@ -76,8 +71,8 @@ class App extends Component {
 
         return (
             <div className="option-container">
-                <Route path={'/'} component={SubMenu} />
-                <Route exact path={'/'} render={() => <Redirect to={'/setting'}/>} />
+                <Route path={'/'} component={SubMenu}/>
+                <Route exact path={'/'} render={() => <Redirect to={'/setting'}/>}/>
                 {loaded ?
                     <div className='option-main'>
                         <Route path={'/setting'} component={OptionSetting}/>

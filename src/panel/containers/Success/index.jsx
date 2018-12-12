@@ -14,10 +14,11 @@ class Success extends Component {
     }
 
     componentDidMount() {
-        const {history} = this.props;
+        const {history, setting} = this.props;
         const {id} = history.location.state;
 
         if (!id) history.replace('/');
+        if (setting.autoClose) window.close();
     }
 
     render() {
@@ -40,7 +41,7 @@ class Success extends Component {
 
 export default connect(
     state => ({
-        token: state.token,
-        dataUrl: state.dataUrl
+        dataUrl: state.dataUrl,
+        setting: state.setting
     })
 )(Success);

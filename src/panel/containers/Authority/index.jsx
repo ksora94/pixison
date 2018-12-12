@@ -29,8 +29,7 @@ class Authority extends Component {
     }
 
     componentDidMount() {
-        this.getToken()
-            .then(() => this.initRootFolder())
+        this.initRootFolder()
             .then(() => {
                 chrome.runtime.sendMessage({
                     type: 'PANEL:authorized',
@@ -46,28 +45,14 @@ class Authority extends Component {
             });
     }
 
-    getToken() {
-        return getToken().then(token => {
-            if (token) {
-                store.dispatch({
-                    type: 'SET_TOKEN',
-                    data: token
-                });
-
-            } else {
-                throw new Error('GET_TOKEN:fail');
-            }
-        })
-    }
-
     initRootFolder() {
-        const {rootFolder, token} = this.props;
+        const {rootFolder} = this.props;
 
         this.setState({
             status: 'INIT_ROOT_FOLDER:start'
         });
         if (rootFolder.id) {
-            return service('getFile', token, {
+            return service('getFile', {
                 id: rootFolder.id
             }).catch(res => {
                 if (res.code = '404') {
@@ -82,7 +67,7 @@ class Authority extends Component {
     }
 
     createRootFolder() {
-        return service('createFolder', this.props.token, {
+        return service('createFolder', {
             title: 'Pixison'
         }).then(res => {
             store.dispatch({
@@ -121,6 +106,10 @@ class Authority extends Component {
         })
     }
 
+    changeStatus(status) {
+        this.setState({status})
+    }
+
     render() {
         const {status} = this.state;
 
@@ -134,7 +123,6 @@ class Authority extends Component {
 
 export default connect(
     state => ({
-        rootFolder: state.rootFolder,
-        token: state.token
+        rootFolder: state.rootFolder
     })
 )(Authority);
