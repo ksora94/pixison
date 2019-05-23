@@ -60,7 +60,7 @@ cm.contextMenus.create({
             type: 'popup',
             top: 140,
             left: 40,
-            height: 120,
+            height: 145,
             width: 300,
             tabId: tab.id,
             focused: true
