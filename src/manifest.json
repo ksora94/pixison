@@ -1,5 +1,7 @@
 {
   "name": "pixison",
+  "version": "0.1.0",
+  "description": "Add web image to your google drive",
   "content_security_policy": "script-src 'self' https://apis.google.com 'unsafe-eval'; object-src 'self'",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfoSsBCMCUOXjpI1Q8vNeYY+et03oF7BFEtDCb2mmsMRo+Q8NmwyPVAMLov+EiVVq7xM7rceC33QGfAOYl3Fxo4NgOtay7dWQw5xdXsup7zfUDlRiFU2wfR3U5JaLoqC50r2QYAHz1xOFEE7gsyvVQVkjh8BDVfUfu6K9t3jUVcQGJJ2s1o92NUpnsDiQbNWT0wGibQu4FfbIiDyUNz2uiqaZ+Twk2RPjc+A9w4ahAYpnbk2Vra+u28y/hi6YgHlRaICOPfTkWUTUo66H8JPN4fXn5JjydOZ8u2u+nqc3CH+TV6tcV1gQt80LSKwi/tV6PMRhsa15/bcrys0GPAo7QIDAQAB",
   "background": {

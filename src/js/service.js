@@ -73,7 +73,8 @@ const s = {
         const metadata = {
             mimeType: 'image/jpeg',
             parents: parentId ? [parentId] : undefined,
-            name, description
+            name: name + '.png',
+            description
         };
 
         return {
