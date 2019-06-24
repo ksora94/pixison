@@ -58,6 +58,19 @@ export const functions = {
         previewer(str, begin, end) {
             return str.slice(+begin, +end);
         }
+    },
+    'Random': {
+        name: '随机',
+        parser(length) {
+            length = length || 4;
+
+            return Math.random().toString(24).substr(2, +length);
+        },
+        previewer(length) {
+            length = length || 4;
+
+            return Math.random().toString(24).substr(2, +length);
+        }
     }
 };
 

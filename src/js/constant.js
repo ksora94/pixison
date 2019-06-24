@@ -5,7 +5,7 @@ const cst = {
         target: 'default',
         system: true,
         default: '$Title{}',
-        expressions: ['$Title{}', '$Title{}-$Date{} $Time{}']
+        expressions: ['$Title{}', '$Title{}-$Date{} $Time{}', '$Random{6}-$Date{}']
     }],
     DEFAULT_SETTING: {
         autoClose: false,
