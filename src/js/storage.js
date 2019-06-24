@@ -25,9 +25,20 @@ function set(key, data) {
 }
 
 function init() {
-    if (!get('PAGES')) {
+    const pages = get('PAGES');
+
+    if (!pages) {
         set('PAGES', cst.DEFAULT_PAGES);
         set('SETTING', cst.DEFAULT_SETTING);
+    } else {
+        pages.some((page, index) => {
+            if (page.target === 'default') {
+                pages[index] = cst.DEFAULT_PAGES[0];
+                return true;
+            }
+            return false;
+        });
+        set('PAGES', pages);
     }
 }
 
