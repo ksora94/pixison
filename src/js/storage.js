@@ -38,7 +38,6 @@ function init() {
             }
             return false;
         });
-        console.log(pages);
         set('PAGES', pages);
     }
 }
