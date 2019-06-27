@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import classNames from 'classnames/bind';
-import {Form, FormGroup, ControlLabel, Toggle, FormControl} from 'rsuite';
+import {Form, FormGroup, ControlLabel, Toggle, FormControl, IconButton, Icon, ButtonGroup, Portal} from 'rsuite';
 import Container from 'components/Container';
+import Loader from 'components/Loader';
 
 import style from './setting.scss';
 import storage from 'js/storage';
+import {syncToDrive, syncFromDrive} from 'js/sync';
 
 const cx = classNames.bind(style);
 
@@ -17,7 +19,9 @@ class OptionSetting extends Component {
         super(props);
 
         this.state = {
-            value: storage.get('SETTING')
+            value: storage.get('SETTING'),
+            uploadLoading: false,
+            downloadLoading: false
         }
     }
 
@@ -26,15 +30,42 @@ class OptionSetting extends Component {
        storage.set('SETTING', value);
    }
 
+   handleUploadClick() {
+        this.setState({
+            uploadLoading: true
+        });
+       return syncToDrive()
+           .then(() => {
+               this.setState({
+                   uploadLoading: false
+               });
+           })
+   }
+
+   handleDownloadClick() {
+       this.setState({
+           downloadLoading: true
+       });
+       return syncFromDrive()
+           .then(() => {
+               this.setState({
+                   downloadLoading: false
+               });
+           })
+   }
+
     render() {
+        const {value, uploadLoading, downloadLoading} = this.state;
+
         return (
             <Container title={'全局设置'} disabled>
                 <Form
                     className={cx('con')}
                     layout="horizontal"
-                    formValue={this.state.value}
+                    formValue={value}
                     onChange={this.handleChange.bind(this)}
                 >
+                    <h5>基础设置</h5>
                     <FormGroup>
                         <ControlLabel>添加成功自动关闭弹窗</ControlLabel>
                         <FormControl accepter={ToggleMask} name={'autoClose'}/>
@@ -43,7 +74,37 @@ class OptionSetting extends Component {
                         <ControlLabel>允许输入目标文件夹</ControlLabel>
                         <FormControl accepter={ToggleMask} name={'allowCustomTarget'}/>
                     </FormGroup>
+                    <hr/>
+                    <h5>同步设置</h5>
+                    <FormGroup>
+                      <ControlLabel>自动同步配置</ControlLabel>
+                      <FormControl accepter={ToggleMask} name={'autoSync'}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>手动同步配置</ControlLabel>
+                        <ButtonGroup style={{marginLeft: '20px'}}>
+                          <IconButton icon={<Icon icon="upload" />}
+                                      appearance={'ghost'}
+                                      disabled={uploadLoading || downloadLoading}
+                                      loading={uploadLoading}
+                                      onClick={this.handleUploadClick.bind(this)}
+                          >同步到 Google Drive</IconButton>
+                          <IconButton icon={<Icon icon="download" />}
+                                      appearance={'ghost'}
+                                      disabled={uploadLoading || downloadLoading}
+                                      loading={downloadLoading}
+                                      onClick={this.handleDownloadClick.bind(this)}
+                          >从 Google Drive 同步</IconButton>
+                        </ButtonGroup>
+                    </FormGroup>
                 </Form>
+                {uploadLoading && (
+                    <Portal>
+                        <div className={cx('loading')}>
+                            <Loader/>
+                        </div>
+                    </Portal>
+                )}
             </Container>
         )
     }

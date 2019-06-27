@@ -7,7 +7,7 @@ import SubMenu from './SubMenu';
 import OptionSetting from './OptionSetting';
 import OptionPage from './OptionPage';
 import OptionTemplate from './OptionTemplate';
-import service, {getToken} from 'js/service';
+import service from 'js/service';
 import storage from 'js/storage';
 
 const mapStateToProps = ({global}) => ({
