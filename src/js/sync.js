@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import storage from './storage';
 import service from './service';
 import cst from './constant';
@@ -5,13 +6,13 @@ import cst from './constant';
 
 export function syncToDrive() {
     const st = {
-        rootFolder: storage.get('ROOT_FOLDER'),
-        pages: storage.get('PAGES'),
-        setting: storage.get ('SETTING')
+        ROOT_FOLDER: storage.get('ROOT_FOLDER'),
+        PAGES: storage.get('PAGES'),
+        SETTING: storage.get ('SETTING')
     };
 
     return service('getFileDetailByName', {
-        folderId: st.rootFolder.id,
+        folderId: st.ROOT_FOLDER.id,
         name: cst.SYNC_CONFIG_FILE_NAME + '.json'
     }).then(res => {
         if (res.files.length) {
@@ -24,12 +25,33 @@ export function syncToDrive() {
     }).then(() => service('uploadJson', {
         name: cst.SYNC_CONFIG_FILE_NAME,
         description: 'Pixison config file',
-        parentId: st.rootFolder.id,
+        parentId: st.ROOT_FOLDER.id,
         obj: st
     }))
 }
 
 export function syncFromDrive() {
+    return service('getFileDetailByName', {
+        folderId: storage.get('ROOT_FOLDER').id,
+        name: cst.SYNC_CONFIG_FILE_NAME + '.json'
+    }).then(res => {
+        if (res.files.length) {
+            return service('getFileContent', {
+                id: res.files[0].id
+            })
+        } else {
+            throw new Error('配置文件缺失')
+        }
+    }).then(res => {
+        if (_.isObject(res)) {
+            _.forIn(res, (value, key) => {
+                if (storage.get(key)) {
+                    storage.set(key, value)
+                }
+            })
+        }
 
+        return res;
+    })
 }
 

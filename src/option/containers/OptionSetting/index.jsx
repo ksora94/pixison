@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
 import {Form, FormGroup, ControlLabel, Toggle, FormControl, IconButton, Icon, ButtonGroup, Portal} from 'rsuite';
 import Container from 'components/Container';
@@ -12,6 +13,17 @@ const cx = classNames.bind(style);
 
 const ToggleMask = function ({value, ...props}) {
     return <Toggle checked={value} size={'md'} {...props}/>
+};
+
+const mapDispatchToProps = {
+    setPages: (pages) => ({
+        type: 'SET_PAGES',
+        data: pages
+    }),
+    setRootFolder: (data) => ({
+        type: 'SET_ROOT_FOLDER',
+        data
+    })
 };
 
 class OptionSetting extends Component {
@@ -43,14 +55,20 @@ class OptionSetting extends Component {
    }
 
    handleDownloadClick() {
+        const {setPages, setRootFolder} = this.props;
+
        this.setState({
            downloadLoading: true
        });
        return syncFromDrive()
-           .then(() => {
+           .then((res) => {
                this.setState({
-                   downloadLoading: false
+                   downloadLoading: false,
+                   value: res.SETTING
                });
+
+               setRootFolder(res.ROOT_FOLDER);
+               setPages(res.PAGES);
            })
    }
 
@@ -92,13 +110,12 @@ class OptionSetting extends Component {
                           <IconButton icon={<Icon icon="download" />}
                                       appearance={'ghost'}
                                       disabled={uploadLoading || downloadLoading}
-                                      loading={downloadLoading}
                                       onClick={this.handleDownloadClick.bind(this)}
                           >从 Google Drive 同步</IconButton>
                         </ButtonGroup>
                     </FormGroup>
                 </Form>
-                {uploadLoading && (
+                {downloadLoading && (
                     <Portal>
                         <div className={cx('loading')}>
                             <Loader/>
@@ -110,4 +127,4 @@ class OptionSetting extends Component {
     }
 }
 
-export default OptionSetting;
+export default connect(null, mapDispatchToProps)(OptionSetting);

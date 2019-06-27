@@ -34,7 +34,6 @@ function service (name, data) {
                 ...options
             }).execute(res => {
                 if (res && res.error) {
-                    console.error(res.error.message);
                     reject({...res, name, path})
                 } else {
                     resolve(res);
@@ -74,7 +73,7 @@ const s = {
         path: `/drive/v3/files?q=name+=+'${name}'${folderId ? `+and+'${folderId}'+in+parents` : ''}`,
         method: 'GET'
     }),
-    getJson: ({id}) => ({
+    getFileContent: ({id}) => ({
         path: `/drive/v3/files/${id}?alt=media`,
         method: 'GET'
     }),
