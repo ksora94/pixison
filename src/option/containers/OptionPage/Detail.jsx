@@ -77,6 +77,7 @@ class Detail extends Component {
             <Container
                 title={url}
                 disabled={disabled}
+                confirmText={formValue.name}
                 onDelete={this.handleDeletePage.bind(this)}
                 onEdit={() => history.replace(`/page/edit?${qs.stringify({url})}`)}
             >

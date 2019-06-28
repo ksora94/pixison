@@ -61,7 +61,7 @@ const s = {
         path: `/drive/v3/files/${id}`,
         method: 'DELETE'
     }),
-    qFiles: (q) => ({
+    qFiles: ({q}) => ({
         path: `/drive/v3/files?q=${q}`,
         method: 'GET'
     }),

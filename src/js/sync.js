@@ -31,10 +31,26 @@ export function syncToDrive() {
 }
 
 export function syncFromDrive() {
-    return service('getFileDetailByName', {
-        folderId: storage.get('ROOT_FOLDER').id,
+    return new Promise((resolve, reject) => {
+        const rt = storage.get('ROOT_FOLDER');
+
+        if (rt) {
+            resolve(rt.id)
+        } else {
+            service('qFiles', {
+                q: 'name+=+"Pixison"'
+            }).then(res => {
+                if (res.files.length) {
+                    resolve(res.files[0].id);
+                } else {
+                     reject('Root Folder Not Exist');
+                }
+            })
+        }
+    }).then(id => service('getFileDetailByName', {
+        folderId: id,
         name: cst.SYNC_CONFIG_FILE_NAME + '.json'
-    }).then(res => {
+    })).then(res => {
         if (res.files.length) {
             return service('getFileContent', {
                 id: res.files[0].id
@@ -45,7 +61,7 @@ export function syncFromDrive() {
     }).then(res => {
         if (_.isObject(res)) {
             _.forIn(res, (value, key) => {
-                if (storage.get(key)) {
+                if (cst.STORAGE_KEYS.includes(key)) {
                     storage.set(key, value)
                 }
             })

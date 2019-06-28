@@ -7,6 +7,9 @@ const initialState = {
 const reducer = {
     SET_ROOT_FOLDER: function (state, action) {
         state.rootFolder = action.data;
+
+        storage.set('ROOT_FOLDER', action.data);
+
         return {...state};
     }
 };

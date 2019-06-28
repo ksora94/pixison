@@ -1,4 +1,5 @@
 const cst = {
+    STORAGE_KEYS: ['ROOT_FOLDER', 'PAGES', 'SETTING'],
     DEFAULT_PAGES: [{
         name: '全部',
         url: '*',
