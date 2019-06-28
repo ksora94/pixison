@@ -1,3 +1,4 @@
+import {Alert} from 'rsuite';
 import _ from 'lodash';
 import storage from './storage';
 import service from './service';
@@ -43,7 +44,8 @@ export function syncFromDrive() {
                 if (res.files.length) {
                     resolve(res.files[0].id);
                 } else {
-                     reject('Root Folder Not Exist');
+                    Alert.warning('Root Folder Not Exist');
+                    reject(res);
                 }
             })
         }

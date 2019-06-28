@@ -1,3 +1,6 @@
+import {Alert} from 'rsuite';
+import _ from 'lodash';
+
 export function getToken() {
     return new Promise((resolve, reject) => {
         chrome.identity.getAuthToken({
@@ -34,12 +37,19 @@ function service (name, data) {
                 ...options
             }).execute(res => {
                 if (res && res.error) {
-                    reject({...res, name, path})
+                    reject({...res.error, name, path})
                 } else {
                     resolve(res);
                 }
             }));
         }, reject);
+    }).catch(res => {
+        if (_.isString(res)) {
+            Alert.error(res);
+        } else {
+            Alert.error(res.message || res.msg || '未知错误')
+        }
+        return Promise.reject(res);
     })
 }
 

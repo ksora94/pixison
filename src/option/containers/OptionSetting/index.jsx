@@ -43,15 +43,13 @@ class OptionSetting extends Component {
    }
 
    handleUploadClick() {
+        const cb = () => this.setState({ uploadLoading: false });
+
         this.setState({
             uploadLoading: true
         });
        return syncToDrive()
-           .then(() => {
-               this.setState({
-                   uploadLoading: false
-               });
-           })
+           .then(cb, cb)
    }
 
    handleDownloadClick() {
@@ -69,6 +67,10 @@ class OptionSetting extends Component {
 
                setRootFolder(res.ROOT_FOLDER);
                setPages(res.PAGES);
+           }).catch(() => {
+               this.setState({
+                   downloadLoading: false
+               });
            })
    }
 
