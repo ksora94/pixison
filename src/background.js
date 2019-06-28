@@ -18,6 +18,14 @@ let currentTargets = [];
 
 storage.init();
 
+cm.browserAction.onClicked.addListener(() => {
+    const rt = storage.get('ROOT_FOLDER');
+
+    chrome.tabs.create({
+        url: rt && rt.id ? `https://drive.google.com/drive/folders/${rt.id}` : 'https://drive.google.com'
+    });
+});
+
 cm.windows.onRemoved.addListener (id => {
     if (currentPanel && currentPanel.id === id) currentPanel = null;
 });
