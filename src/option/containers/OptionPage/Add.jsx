@@ -7,7 +7,6 @@ import qs from "qs";
 import style from './page.scss';
 import PageForm from "~/components/PageForm";
 import Container from 'components/Container';
-import {autoSyncToDrive} from "js/sync";
 
 const cx = classNames.bind(style);
 
@@ -41,7 +40,6 @@ class Add extends Component {
 
         if(this.form.root.check()) {
             this.props.addPage(formValue);
-            autoSyncToDrive();
             this.props.history.replace(`/page/detail?${qs.stringify({url: formValue.url})}`);
         }
     }

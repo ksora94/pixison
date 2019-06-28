@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import cst from 'js/constant';
-import {autoSyncToDrive} from './sync';
 
 const s = localStorage;
 
@@ -10,7 +9,7 @@ function get(key) {
     if (!data) return undefined;
     try {
         return JSON.parse(data);
-    } catch (e) {
+    } catch(e) {
         console.error('No exist key');
         return undefined;
     }
@@ -27,9 +26,11 @@ function set(key, data) {
 
 function init() {
     const pages = get('PAGES');
-    const setting = get ('SETTING');
 
-    if (pages) {
+    if (!pages) {
+        set('PAGES', cst.DEFAULT_PAGES);
+        set('SETTING', cst.DEFAULT_SETTING);
+    } else {
         pages.some((page, index) => {
             if (page.target === 'default') {
                 pages[index] = cst.DEFAULT_PAGES[0];
@@ -38,19 +39,6 @@ function init() {
             return false;
         });
         set('PAGES', pages);
-    } else {
-        set('PAGES', cst.DEFAULT_PAGES);
-    }
-
-    if (setting) {
-        _.forIn(cst.DEFAULT_SETTING, (value, key) => {
-            if (!setting.hasOwnProperty(key)) {
-                setting[key] = value;
-            }
-        });
-        set('SETTING', setting)
-    } else {
-        set('SETTING', cst.DEFAULT_SETTING);
     }
 }
 

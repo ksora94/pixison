@@ -5,13 +5,6 @@ const initialState = {
 };
 
 const reducer = {
-    SET_PAGES(state, action) {
-        state.pages = action.data;
-
-        storage.set('PAGES', state.pages);
-
-        return {...state}
-    },
     ADD_PAGE(state, action) {
         state.pages = [...state.pages, action.data];
 
