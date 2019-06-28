@@ -1,9 +1,33 @@
-import {Alert} from 'rsuite';
+import React from 'react';
+import {Alert, Notification, Icon} from 'rsuite';
 import _ from 'lodash';
 import storage from './storage';
 import service from './service';
 import cst from './constant';
 
+let synchronizing = false;
+
+export const autoSyncToDrive = _.throttle(function () {
+
+    if (synchronizing) return;
+    synchronizing = true;
+
+    syncToDrive()
+        .then(res => {
+            synchronizing = false;
+            Notification.open({
+                duration: 3000,
+                placement: 'bottomLeft',
+                description: (
+                    <div>
+                        <Icon icon={'check'} style={{color: '#00b1d4', marginRight: '6px'}}/>自动同步完成
+                    </div>
+                )
+            });
+
+            return res;
+        })
+}, 3000);
 
 export function syncToDrive() {
     const st = {

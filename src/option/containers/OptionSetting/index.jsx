@@ -37,42 +37,42 @@ class OptionSetting extends Component {
         }
     }
 
-   handleChange(value) {
-       this.setState({value});
-       storage.set('SETTING', value);
-   }
+    handleChange(value) {
+        this.setState({value});
+        storage.set('SETTING', value);
+    }
 
-   handleUploadClick() {
-        const cb = () => this.setState({ uploadLoading: false });
+    handleUploadClick() {
+        const cb = () => this.setState({uploadLoading: false});
 
         this.setState({
             uploadLoading: true
         });
-       return syncToDrive()
-           .then(cb, cb)
-   }
+        return syncToDrive()
+            .then(cb, cb)
+    }
 
-   handleDownloadClick() {
+    handleDownloadClick() {
         const {setPages, setRootFolder} = this.props;
 
-       this.setState({
-           downloadLoading: true
-       });
-       return syncFromDrive()
-           .then((res) => {
-               this.setState({
-                   downloadLoading: false,
-                   value: res.SETTING
-               });
+        this.setState({
+            downloadLoading: true
+        });
+        return syncFromDrive()
+            .then((res) => {
+                this.setState({
+                    downloadLoading: false,
+                    value: res.SETTING
+                });
 
-               setRootFolder(res.ROOT_FOLDER);
-               setPages(res.PAGES);
-           }).catch(() => {
-               this.setState({
-                   downloadLoading: false
-               });
-           })
-   }
+                setRootFolder(res.ROOT_FOLDER);
+                setPages(res.PAGES);
+            }).catch(() => {
+                this.setState({
+                    downloadLoading: false
+                });
+            })
+    }
 
     render() {
         const {value, uploadLoading, downloadLoading} = this.state;
@@ -97,23 +97,23 @@ class OptionSetting extends Component {
                     <hr/>
                     <h5>同步设置</h5>
                     <FormGroup>
-                      <ControlLabel>自动同步配置</ControlLabel>
-                      <FormControl accepter={ToggleMask} name={'autoSync'}/>
+                        <ControlLabel>自动同步配置</ControlLabel>
+                        <FormControl accepter={ToggleMask} name={'autoSync'}/>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>手动同步配置</ControlLabel>
                         <ButtonGroup style={{marginLeft: '20px'}}>
-                          <IconButton icon={<Icon icon="upload" />}
-                                      appearance={'ghost'}
-                                      disabled={uploadLoading || downloadLoading}
-                                      loading={uploadLoading}
-                                      onClick={this.handleUploadClick.bind(this)}
-                          >同步到 Google Drive</IconButton>
-                          <IconButton icon={<Icon icon="download" />}
-                                      appearance={'ghost'}
-                                      disabled={uploadLoading || downloadLoading}
-                                      onClick={this.handleDownloadClick.bind(this)}
-                          >从 Google Drive 同步</IconButton>
+                            <IconButton icon={<Icon icon="upload"/>}
+                                        appearance={'ghost'}
+                                        disabled={uploadLoading || downloadLoading}
+                                        loading={uploadLoading}
+                                        onClick={this.handleUploadClick.bind(this)}
+                            >同步到 Google Drive</IconButton>
+                            <IconButton icon={<Icon icon="download"/>}
+                                        appearance={'ghost'}
+                                        disabled={uploadLoading || downloadLoading}
+                                        onClick={this.handleDownloadClick.bind(this)}
+                            >从 Google Drive 同步</IconButton>
                         </ButtonGroup>
                     </FormGroup>
                 </Form>

@@ -44,10 +44,12 @@ function service (name, data) {
             }));
         }, reject);
     }).catch(res => {
-        if (_.isString(res)) {
-            Alert.error(res);
-        } else {
-            Alert.error(res.message || res.msg || '未知错误')
+        if (window.PIXISON_ENV === 'option') {
+            if (_.isString(res)) {
+                Alert.error(res);
+            } else {
+                Alert.error(res.message || res.msg || '未知错误')
+            }
         }
         return Promise.reject(res);
     })
@@ -73,10 +75,6 @@ const s = {
     }),
     qFiles: ({q}) => ({
         path: `/drive/v3/files?q=${q}`,
-        method: 'GET'
-    }),
-    getFolderContent: ({id}) => ({
-        path: `/drive/v3/files?q='${id}'+in+parents`,
         method: 'GET'
     }),
     getFileDetailByName: ({folderId, name}) => ({
