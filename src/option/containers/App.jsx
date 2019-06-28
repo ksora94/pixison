@@ -7,17 +7,17 @@ import SubMenu from './SubMenu';
 import OptionSetting from './OptionSetting';
 import OptionPage from './OptionPage';
 import OptionTemplate from './OptionTemplate';
-import service from 'js/service';
-import {syncToDrive} from "js/sync";
+import service, {getToken} from 'js/service';
+import storage from 'js/storage';
 
 const mapStateToProps = ({global}) => ({
     rootFolder: global.rootFolder
 });
 
 const mapDispatchToProps = {
-    setRootFolder: (rootFolder) => ({
+    setRootFolder: (id) => ({
         type: 'SET_ROOT_FOLDER',
-        data: rootFolder
+        data: id
     })
 };
 
@@ -50,19 +50,7 @@ class App extends Component {
                 }
             })
         } else {
-            service('qFiles', {
-                q: 'name+=+"Pixison"'
-            }).then(res => {
-                if (res.files.length) {
-                    return this.props.setRootFolder(res.files[0]);
-                } else {
-                    return this.createRootFolder()
-                }
-            }).then(() => {
-                this.setState({
-                    loaded: true
-                });
-            });
+            this.createRootFolder();
         }
     }
 
@@ -71,7 +59,10 @@ class App extends Component {
             title: 'Pixison'
         }).then(res => {
             this.props.setRootFolder(res);
-            return syncToDrive();
+            this.setState({
+                loaded: true
+            });
+            storage.set('ROOT_FOLDER', res);
         })
     }
 

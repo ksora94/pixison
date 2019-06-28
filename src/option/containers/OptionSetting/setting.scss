@@ -3,21 +3,5 @@
         .rs-btn-toggle {
             margin: 4px 20px;
         }
-        .rs-btn-spin {
-            &::after{
-                border-top-color: #00b1d4 !important;
-            }
-        }
     }
-}
-
-.loading{
-    position: fixed;
-    width: 100%;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, .8);
 }

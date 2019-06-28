@@ -7,7 +7,6 @@ import Container from 'components/Container';
 import PageForm from 'components/PageForm';
 import connect from "react-redux/es/connect/connect";
 import qs from "qs";
-import {autoSyncToDrive} from "js/sync";
 
 const cx = classNames.bind(style);
 
@@ -70,7 +69,6 @@ class Edit extends Component {
 
         if(this.form.root.check()) {
             this.props.modifyPage(formValue);
-            autoSyncToDrive();
             this.props.history.replace(`/page/detail?${qs.stringify({url: formValue.url})}`);
         }
     }
