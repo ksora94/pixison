@@ -24,24 +24,16 @@ export const autoSyncToDrive = _.throttle(function () {
         || synchronizing) return;
     synchronizing = true;
 
-    // setTimeout(function () {
-    //     Notification.open({
-    //         duration: 99999,
-    //         placement: 'bottomLeft',
-    //         key: 'autoSynchronizing',
-    //         description: (
-    //             <div>
-    //                 <Icon icon={'upload'} style={{color: '#00b1d4', marginRight: '6px'}}/>自动同步中
-    //             </div>
-    //         )
-    //     });
-    // }, 0);
-
-    syncToDrive()
-        .then(res => {
-            synchronizing = false;
-            // Notification.remove('autoSynchronizing');
-            Notification.open({
+    Notification.open({
+        placement: 'bottomLeft',
+        key: 'autoSynchronizing',
+        description: (
+            <div>
+                <Icon icon={'upload'} style={{color: '#00b1d4', marginRight: '6px'}}/>自动同步中
+            </div>
+        ),
+        onClose() {
+            setTimeout(() => Notification.open({
                 duration: 3000,
                 placement: 'bottomLeft',
                 description: (
@@ -49,7 +41,14 @@ export const autoSyncToDrive = _.throttle(function () {
                         <Icon icon={'check'} style={{color: '#00b1d4', marginRight: '6px'}}/>自动同步完成
                     </div>
                 )
-            });
+            }), 550);
+        }
+    });
+
+    syncToDrive()
+        .then(res => {
+            synchronizing = false;
+            Notification.remove('autoSynchronizing');
 
             return res;
         })
@@ -59,7 +58,7 @@ export function syncToDrive() {
     const st = {
         ROOT_FOLDER: storage.get('ROOT_FOLDER'),
         PAGES: storage.get('PAGES'),
-        SETTING: storage.get ('SETTING')
+        SETTING: storage.get('SETTING')
     };
 
     return service('getFileDetailByName', {
