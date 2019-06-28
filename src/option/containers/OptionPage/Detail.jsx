@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import style from './page.scss';
 import Container from 'components/Container';
 import PageForm from 'components/PageForm';
+import {autoSyncToDrive} from "js/sync";
 
 const cx = classNames.bind(style);
 
@@ -66,6 +67,7 @@ class Detail extends Component {
 
     handleDeletePage() {
         this.props.deletePage(this.state.url);
+        autoSyncToDrive();
         this.props.history.replace('/page');
     }
 
@@ -77,6 +79,7 @@ class Detail extends Component {
             <Container
                 title={url}
                 disabled={disabled}
+                confirmText={formValue.name}
                 onDelete={this.handleDeletePage.bind(this)}
                 onEdit={() => history.replace(`/page/edit?${qs.stringify({url})}`)}
             >

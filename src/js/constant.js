@@ -1,4 +1,5 @@
 const cst = {
+    STORAGE_KEYS: ['ROOT_FOLDER', 'PAGES', 'SETTING'],
     DEFAULT_PAGES: [{
         name: '全部',
         url: '*',
@@ -9,8 +10,10 @@ const cst = {
     }],
     DEFAULT_SETTING: {
         autoClose: false,
-        allowCustomTarget: false
-    }
+        allowCustomTarget: false,
+        autoSync: true
+    },
+    SYNC_CONFIG_FILE_NAME: '.pixison_config'
 };
 
 export default cst;
