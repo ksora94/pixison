@@ -7,14 +7,40 @@ import cst from './constant';
 
 let synchronizing = false;
 
-export const autoSyncToDrive = _.throttle(function () {
+function validateConfig(config) {
+    return cst.STORAGE_KEYS.every(key => config.hasOwnProperty(key))
+        && _.isObject(config['SETTING'])
+        && _.isArray(config['PAGES'])
+        && config['PAGES'].length
+        && config['PAGES'][0].system
+        && _.isObject(config['ROOT_FOLDER'])
+        && config['ROOT_FOLDER'].id
+}
 
-    if (synchronizing) return;
+export const autoSyncToDrive = _.throttle(function () {
+    if (window.PIXISON_ENV !== 'option'
+        || !storage.get('SETTING')
+        || !storage.get('SETTING').autoSync
+        || synchronizing) return;
     synchronizing = true;
+
+    // setTimeout(function () {
+    //     Notification.open({
+    //         duration: 99999,
+    //         placement: 'bottomLeft',
+    //         key: 'autoSynchronizing',
+    //         description: (
+    //             <div>
+    //                 <Icon icon={'upload'} style={{color: '#00b1d4', marginRight: '6px'}}/>自动同步中
+    //             </div>
+    //         )
+    //     });
+    // }, 0);
 
     syncToDrive()
         .then(res => {
             synchronizing = false;
+            // Notification.remove('autoSynchronizing');
             Notification.open({
                 duration: 3000,
                 placement: 'bottomLeft',
@@ -85,7 +111,7 @@ export function syncFromDrive() {
             throw new Error('配置文件缺失')
         }
     }).then(res => {
-        if (_.isObject(res)) {
+        if (_.isObject(res) && validateConfig(res)) {
             _.forIn(res, (value, key) => {
                 if (cst.STORAGE_KEYS.includes(key)) {
                     storage.set(key, value)

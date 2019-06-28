@@ -8,6 +8,7 @@ import OptionSetting from './OptionSetting';
 import OptionPage from './OptionPage';
 import OptionTemplate from './OptionTemplate';
 import service from 'js/service';
+import {syncToDrive} from "js/sync";
 
 const mapStateToProps = ({global}) => ({
     rootFolder: global.rootFolder
@@ -70,6 +71,7 @@ class App extends Component {
             title: 'Pixison'
         }).then(res => {
             this.props.setRootFolder(res);
+            return syncToDrive();
         })
     }
 

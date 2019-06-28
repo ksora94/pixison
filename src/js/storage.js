@@ -23,9 +23,6 @@ function set(key, data) {
     if (_.isNull(data)) {
         s.removeItem(key);
     }
-    if (get('SETTING').autoSync && cst.STORAGE_KEYS.includes(key)) {
-        autoSyncToDrive();
-    }
 }
 
 function init() {

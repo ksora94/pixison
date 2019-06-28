@@ -8,6 +8,7 @@ import store from 'panel/store';
 import event from 'js/event';
 import service from 'js/service';
 import storage from "~/js/storage";
+import {syncToDrive} from "js/sync";
 
 const cx = classNames.bind(style);
 
@@ -83,6 +84,7 @@ class Authority extends Component {
             title: 'Pixison'
         }).then(res => {
             this.props.setRootFolder(res);
+            syncToDrive();
 
             return res;
         })

@@ -7,7 +7,7 @@ import Loader from 'components/Loader';
 
 import style from './setting.scss';
 import storage from 'js/storage';
-import {syncToDrive, syncFromDrive} from 'js/sync';
+import {syncToDrive, syncFromDrive, autoSyncToDrive} from 'js/sync';
 
 const cx = classNames.bind(style);
 
@@ -40,6 +40,7 @@ class OptionSetting extends Component {
     handleChange(value) {
         this.setState({value});
         storage.set('SETTING', value);
+        autoSyncToDrive();
     }
 
     handleUploadClick() {
