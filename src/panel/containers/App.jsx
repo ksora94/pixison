@@ -6,6 +6,8 @@ import Form from 'panel/containers/Form';
 import Processing from 'panel/containers/Processing';
 import Success from 'panel/containers/Success';
 
+window.PIXISON_ENV = 'panel';
+
 class App extends Component{
     render() {
         return (

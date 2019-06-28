@@ -6,8 +6,9 @@ import classNames from 'classnames/bind';
 import style from './authority.scss';
 import store from 'panel/store';
 import event from 'js/event';
-import service, {getToken} from 'js/service';
+import service from 'js/service';
 import storage from "~/js/storage";
+import {syncToDrive} from "js/sync";
 
 const cx = classNames.bind(style);
 
@@ -55,14 +56,26 @@ class Authority extends Component {
             return service('getFile', {
                 id: rootFolder.id
             }).catch(res => {
-                if (res.code = '404') {
+                if (+res.code === 404) {
                     return this.createRootFolder();
                 } else {
                     throw new Error('INIT_ROOT_FOLDER:fail');
                 }
+            }).catch(() => {
+                throw new Error('INIT_ROOT_FOLDER:fail');
             })
         } else {
-            return this.createRootFolder();
+            return service('qFiles', {
+                q: 'name+=+"Pixison"'
+            }).then(res => {
+                if (res.files.length) {
+                    return this.props.setRootFolder(res.files[0]);
+                } else {
+                    return this.createRootFolder();
+                }
+            }).catch(() => {
+                throw new Error('INIT_ROOT_FOLDER:fail');
+            });
         }
     }
 
@@ -70,13 +83,10 @@ class Authority extends Component {
         return service('createFolder', {
             title: 'Pixison'
         }).then(res => {
-            store.dispatch({
-                type: 'SET_ROOT_FOLDER',
-                data: res
-            });
-            storage.set('ROOT_FOLDER', res);
-        }).catch(() => {
-            throw new Error('INIT_ROOT_FOLDER:fail');
+            this.props.setRootFolder(res);
+            syncToDrive();
+
+            return res;
         })
     }
 
@@ -124,5 +134,14 @@ class Authority extends Component {
 export default connect(
     state => ({
         rootFolder: state.rootFolder
-    })
+    }),
+    {
+        setRootFolder(rootFolder) {
+            storage.set('ROOT_FOLDER', rootFolder);
+            return {
+                type: 'SET_ROOT_FOLDER',
+                data: rootFolder
+            }
+        }
+    }
 )(Authority);

@@ -7,6 +7,8 @@ import App from 'option/containers/App';
 import 'css/index.scss';
 import 'rsuite/styles/less/index.less';
 
+window.PIXISON_ENV = 'option';
+
 render(
     <Provider store={store}>
         <Router>
